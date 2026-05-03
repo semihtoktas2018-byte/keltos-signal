@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>KELTOŞ PARAYA KOŞ | Sinyal + Paper Trade Paneli</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#080b12; --panel:#111827; --panel2:#0b1220; --border:#1f2937;
+  --text:#e5e7eb; --muted:#93a4b8; --green:#22c55e; --red:#ef4444;
+  --yellow:#f59e0b; --blue:#38bdf8; --orange:#f97316; --shadow:rgba(0,0,0,.22);
+}
+body.light{
+  --bg:#f3f6fb; --panel:#ffffff; --panel2:#f8fafc; --border:#dbe3ef;
+  --text:#0f172a; --muted:#64748b; --shadow:rgba(15,23,42,.08);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  min-height:100vh;background:var(--bg);color:var(--text);
+  font-family:Inter,system-ui,sans-serif;transition:.2s background,.2s color;
+}
+body:not(.light)::before{
+  content:"";position:fixed;inset:0;pointer-events:none;opacity:.45;
+  background-image:linear-gradient(rgba(56,189,248,.03) 1px, transparent 1px),linear-gradient(90deg, rgba(56,189,248,.03) 1px, transparent 1px);
+  background-size:42px 42px;
+}
+.container{position:relative;z-index:1;max-width:1400px;margin:auto;padding:22px}
+.header{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;padding:24px 0 18px;border-bottom:1px solid var(--border);margin-bottom:16px}
+.brand h1{font-size:31px;font-weight:900;letter-spacing:-.6px}
+.brand .sub{font-size:13px;color:var(--muted);margin-top:7px}
+.header-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.pill{border:1px solid var(--border);background:var(--panel);border-radius:999px;padding:8px 10px;color:var(--text);font-size:12px}
+.btn{border:1px solid var(--blue);background:transparent;color:var(--blue);border-radius:10px;padding:9px 12px;font-weight:800;cursor:pointer}
+.btn:hover{background:rgba(56,189,248,.12)}
+.status{font-size:12px;color:var(--muted);text-align:right;width:100%;margin-top:4px}
+.dot{display:inline-block;width:8px;height:8px;background:var(--green);border-radius:50%;margin-right:5px}
+.warning{
+  background:rgba(245,158,11,.09);border:1px solid rgba(245,158,11,.32);
+  color:var(--yellow);border-radius:10px;padding:11px 14px;text-align:center;font-size:12px;font-weight:700;margin-bottom:14px
+}
+.toolbar{
+  background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:13px;
+  display:grid;grid-template-columns:repeat(7,1fr);gap:10px;margin-bottom:14px;box-shadow:0 14px 35px var(--shadow)
+}
+.field label{display:block;color:var(--muted);font-size:11px;margin-bottom:6px}
+input,select{
+  width:100%;background:var(--panel2);border:1px solid var(--border);border-radius:9px;
+  color:var(--text);padding:10px;font:500 13px Inter;outline:none
+}
+input:focus,select:focus{border-color:var(--blue)}
+.ultra-box{
+  display:none;background:linear-gradient(135deg,rgba(34,197,94,.14),rgba(56,189,248,.09));
+  border:1px solid rgba(34,197,94,.42);border-radius:16px;padding:14px;margin-bottom:14px
+}
+.ultra-box.show{display:block}
+.ultra-title{font-weight:900;margin-bottom:9px;color:var(--green)}
+.ultra-list{display:flex;gap:8px;flex-wrap:wrap}
+.ultra-chip{border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.1);padding:9px 11px;border-radius:12px;font-size:13px;font-weight:800}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:14px}
+.card{
+  background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:16px;
+  box-shadow:0 14px 38px var(--shadow)
+}
+.card.buy{border-color:rgba(34,197,94,.44)}
+.card.sell{border-color:rgba(239,68,68,.44)}
+.card.wait{border-color:var(--border)}
+.card.ultra{box-shadow:0 0 0 1px rgba(34,197,94,.22),0 18px 55px rgba(34,197,94,.08)}
+.top{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:12px}
+.coin{font-weight:900;font-size:17px}
+.badge{font-weight:900;font-size:12px;border-radius:999px;padding:7px 11px;white-space:nowrap}
+.badge.buy{background:rgba(34,197,94,.13);color:var(--green)}
+.badge.sell{background:rgba(239,68,68,.13);color:var(--red)}
+.badge.wait{background:rgba(148,163,184,.13);color:var(--muted)}
+.ultra-badge{display:inline-block;margin-left:5px;color:var(--green)}
+.price{font-size:27px;font-weight:900;margin:7px 0}
+.change.up{color:var(--green)}.change.down{color:var(--red)}
+.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
+.metric{background:var(--panel2);border:1px solid var(--border);border-radius:10px;padding:9px}
+.metric .l{color:var(--muted);font-size:10px}.metric .v{font-weight:900;font-size:13px;margin-top:4px}
+.green{color:var(--green)}.red{color:var(--red)}.yellow{color:var(--yellow)}.blue{color:var(--blue)}
+.scorebar{height:7px;background:var(--panel2);border:1px solid var(--border);border-radius:99px;overflow:hidden;margin:10px 0}
+.scorefill{height:100%;border-radius:99px}
+.reason{font-size:12px;color:var(--muted);line-height:1.45;min-height:38px}
+.risk{background:var(--panel2);border:1px solid var(--border);border-radius:12px;padding:11px;margin-top:10px}
+.risk h4{font-size:12px;color:var(--muted);margin-bottom:8px}
+.riskline{display:flex;justify-content:space-between;gap:10px;font-size:12px;margin:5px 0}
+.trade-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.trade-buy{border-color:var(--green);color:var(--green)}
+.trade-sell{border-color:var(--red);color:var(--red)}
+.bottom{display:grid;grid-template-columns:1.2fr .8fr;gap:14px;margin-bottom:14px}
+.panel{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:16px;box-shadow:0 14px 38px var(--shadow)}
+.panel h3{font-size:16px;margin-bottom:12px}
+.log{max-height:260px;overflow:auto}.logitem{border-bottom:1px solid var(--border);padding:8px 0;font-size:12px;color:var(--muted)}.logitem b{color:var(--text)}
+.small{font-size:12px;color:var(--muted);line-height:1.55}
+.trade-pnl{background:var(--panel2);border-radius:10px;padding:10px;margin-top:10px}
+.trade-item{padding:10px;border-bottom:1px solid var(--border);font-size:12px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px}
+.trade-item .close-date{font-size:10px;color:var(--muted)}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.58);z-index:10;align-items:center;justify-content:center;padding:18px}
+.modal.show{display:flex}
+.modal-card{max-width:620px;width:100%;background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:18px}
+pre{white-space:pre-wrap;background:var(--panel2);border:1px solid var(--border);border-radius:12px;padding:12px;color:var(--text);font-size:12px;line-height:1.45;max-height:320px;overflow:auto}
+@media(max-width:980px){.toolbar{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.bottom{grid-template-columns:1fr}.header{flex-direction:column}.header-actions{justify-content:flex-start}.status{text-align:left}}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="brand">
+      <h1 data-i="title">KELTOŞ PARAYA KOŞ</h1>
+      <div class="sub" data-i="subtitle">RSI + EMA + Risk + Ultra Filtre + Paper Trade Tracker</div>
+    </div>
+    <div class="header-actions">
+      <select class="pill" id="lang"><option value="tr">TR</option><option value="en">EN</option></select>
+      <button class="btn" id="themeBtn">🌙</button>
+      <button class="btn" id="refreshBtn">Yenile</button>
+      <div class="status"><span class="dot"></span><span id="liveText">Başlatılıyor...</span><br><span id="lastUpdate">--</span></div>
+    </div>
+  </div>
+
+  <div class="warning" data-i="warning">Bu panel otomatik işlem açmaz. Sadece teknik analiz, risk hesabı ve güvenli paper trade simülasyonu yapar.</div>
+
+  <div class="toolbar">
+    <div class="field"><label data-i="tf">Zaman dilimi</label><select id="interval"><option value="1m">1 dakika</option><option value="5m">5 dakika</option><option value="15m" selected>15 dakika</option><option value="1h">1 saat</option><option value="4h">4 saat</option></select></div>
+    <div class="field"><label data-i="balance">Sermaye (USDT)</label><input id="balance" type="number" placeholder="1000" value="1000"></div>
+    <div class="field"><label data-i="risk">Risk (%)</label><input id="riskPct" type="number" value="2" step="0.1"></div>
+    <div class="field"><label>Telegram Token</label><input id="tgToken" placeholder="Bot token"></div>
+    <div class="field"><label>Chat ID</label><input id="tgChat" placeholder="Chat ID"></div>
+    <div class="field"><label data-i="mode">Alarm modu</label><select id="alertMode"><option value="ultra">Ultra</option><option value="strong">Güçlü+</option><option value="all">Tüm sinyaller</option></select></div>
+    <div class="field"><label>Backend URL</label><input id="backendUrl" placeholder="http://localhost:3000"></div>
+  </div>
+
+  <div class="ultra-box" id="ultraBox">
+    <div class="ultra-title" data-i="ultraTitle">🔥 Ultra Sinyaller</div>
+    <div class="ultra-list" id="ultraList"></div>
+  </div>
+
+  <div class="grid" id="cards"></div>
+
+  <div class="bottom">
+    <div class="panel">
+      <h3 data-i="logs">Sinyal Günlüğü</h3>
+      <div class="log" id="log"></div>
+    </div>
+    <div class="panel">
+      <h3 data-i="guideTitle">Kullanım Notu</h3>
+      <div class="small" id="guideText"></div>
+    </div>
+  </div>
+
+  <div id="tradePanel" class="panel" style="margin-top:0">
+    <h3>📊 Trade Paneli (Paper Trade Performans)</h3>
+    <div style="display:flex;gap:15px;flex-wrap:wrap;margin-bottom:12px">
+      <div>Toplam Trade: <b id="t_total">0</b></div>
+      <div>Kazanan: <b id="t_win" class="green">0</b></div>
+      <div>Kaybeden: <b id="t_loss" class="red">0</b></div>
+      <div>Winrate: <b id="t_wr">0%</b></div>
+      <div>Toplam PnL: <b id="t_pnl">0 USDT</b></div>
+    </div>
+    <div id="tradeList" style="max-height:220px;overflow-y:auto;font-size:12px"></div>
+  </div>
+</div>
+
+<div class="modal" id="tradeModal">
+  <div class="modal-card">
+    <h3 id="modalTitle">Paper Trade</h3><br>
+    <pre id="modalPayload"></pre><br>
+    <button class="btn" id="closeModalBtn">Kapat</button>
+  </div>
+</div>
+
+<script>
+// ==================== SABİTLER ====================
+const COINS = ["BTCUSDT","ETHUSDT","SOLUSDT","BNBUSDT","XRPUSDT","ADAUSDT","DOGEUSDT","AVAXUSDT","LINKUSDT"];
+const LIMIT = 130;
+const RSI_PERIOD = 14;
+const EMA_SHORT = 20;
+const EMA_LONG = 50;
+const MIN_SCORE = 80;
+const COOLDOWN_MS = 5 * 60 * 1000;
+
+// ==================== GLOBAL DEĞİŞKENLER ====================
+let lastData = [];
+let trades = JSON.parse(localStorage.getItem("kpk_paperTrades") || "[]");
+let lastSent = JSON.parse(localStorage.getItem("kpk_lastSent") || "{}");
+let settings = JSON.parse(localStorage.getItem("kpk_settings") || "{}");
+
+// ==================== DİL DOSYASI ====================
+const translations = {
+  tr: {
+    title: "KELTOŞ PARAYA KOŞ", subtitle: "RSI + EMA + Risk + Ultra Filtre + Paper Trade Tracker", refresh: "Yenile",
+    warning: "Bu panel otomatik işlem açmaz. Sadece teknik analiz, risk hesabı ve güvenli paper trade simülasyonu yapar.",
+    tf: "Zaman dilimi", balance: "Sermaye (USDT)", risk: "Risk (%)", mode: "Alarm modu", ultraTitle: "🔥 Ultra Sinyaller",
+    logs: "Sinyal Günlüğü", guideTitle: "Kullanım Notu",
+    guide: `<b>Ultra sinyal:</b><br>
+RSI 30 altı + EMA20 > EMA50 + skor ≥ 70 → BUY<br>
+RSI 70 üstü + EMA20 < EMA50 + skor ≥ 70 → SELL<br><br>
+
+<b>Giriş:</b> Sinyal anı fiyat<br>
+<b>Hedef:</b> %2 – %5<br>
+<b>Stop:</b> %1 – %2<br><br>
+
+<b>Risk:</b> Max %1–2 sermaye<br>
+<b>Not:</b> Düşük skor filtrelenir`,
+    entry: "Giriş", stop: "Stop", target: "Hedef", riskAmount: "Risk Tutarı", position: "Pozisyon", coinAmount: "Coin Adedi", noRisk: "Net sinyal yok. Pozisyon açma önerilmez.",
+    reasonWait: "Net setup yok. Beklemek daha güvenli.", active: "Canlı takip aktif", updated: "Son güncelleme"
+  },
+  en: {
+    title: "KELTOS MONEY RUN", subtitle: "RSI + EMA + Risk + Ultra Signal Filter", refresh: "Refresh",
+    warning: "This panel does not execute real trades. It provides technical analysis, risk calculation and safe paper-trade simulation only.",
+    tf: "Timeframe", balance: "Capital (USDT)", risk: "Risk (%)", mode: "Alert mode", ultraTitle: "🔥 Ultra Signals",
+    logs: "Signal Log", guideTitle: "Usage Note",
+    guide: `<b>Ultra signal</b>: RSI 30 zone/reversal + price above EMA20 + EMA20 above/near EMA50 + score 85+.<br><br><b>Safe use</b>: Never trade without a stop. Do not risk more than 1-2% of capital per trade.<br><br><b>Binance buttons</b>: For security, they do not send real orders. They simulate paper-trade payloads. Real orders require a backend.`,
+    entry: "Entry", stop: "Stop", target: "Target", riskAmount: "Risk Amount", position: "Position", coinAmount: "Coin Amount", noRisk: "No clear signal. Position is not recommended.",
+    reasonWait: "No clear setup. Waiting is safer.", active: "Live tracking active", updated: "Last update"
+  }
+};
+
+function getLang() { return document.getElementById("lang").value; }
+function t(key) { return translations[getLang()][key] || key; }
+
+// ==================== YARDIMCI FONKSİYONLAR ====================
+function fmt(n) {
+  if (n === null || n === undefined || isNaN(n)) return "--";
+  if (Math.abs(n) >= 1000) return "$" + n.toLocaleString(getLang() === "tr" ? "tr-TR" : "en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  if (Math.abs(n) >= 1) return "$" + n.toFixed(4);
+  return "$" + n.toFixed(6);
+}
+
+function ema(values, period) {
+  if (values.length < period) return null;
+  const k = 2 / (period + 1);
+  let emaVal = values.slice(0, period).reduce((a, b) => a + b, 0) / period;
+  for (let i = period; i < values.length; i++) {
+    emaVal = values[i] * k + emaVal * (1 - k);
+  }
+  return emaVal;
+}
+
+function rsi(values, period = 14) {
+  if (values.length < period + 1) return null;
+  let gain = 0, loss = 0;
+  for (let i = 1; i <= period; i++) {
+    const diff = values[i] - values[i - 1];
+    if (diff >= 0) gain += diff;
+    else loss -= diff;
+  }
+  let avgGain = gain / period;
+  let avgLoss = loss / period;
+  for (let i = period + 1; i < values.length; i++) {
+    const diff = values[i] - values[i - 1];
+    avgGain = (avgGain * (period - 1) + (diff > 0 ? diff : 0)) / period;
+    avgLoss = (avgLoss * (period - 1) + (diff < 0 ? -diff : 0)) / period;
+  }
+  if (avgLoss === 0) return 100;
+  return 100 - (100 / (1 + avgGain / avgLoss));
+}
+
+function signalLogic(price, prevPrice, rsiVal, prevRsi, e20, e50, e20Prev) {
+  if (!rsiVal || !e20 || !e50) return { signal: "WAIT", quality: "ZAYIF", score: 0, reason: "Veri yetersiz.", ultra: false };
+  
+  const rsiTurn = prevRsi < 30 && rsiVal >= 30;
+  const rsiOversold = rsiVal < 30;
+  const above20 = price > e20;
+  const crossed20 = prevPrice < e20 && price >= e20;
+  const trendOk = e20 >= e50;
+  const emaSlopeUp = e20Prev ? e20 > e20Prev : false;
+  const below20 = price < e20;
+  const overbought = rsiVal > 70;
+  
+  let buy = 0;
+  if (rsiTurn) buy += 35;
+  else if (rsiOversold) buy += 25;
+  if (above20) buy += 25;
+  if (crossed20) buy += 10;
+  if (trendOk) buy += 20;
+  if (emaSlopeUp) buy += 15;
+  
+  let sell = 0;
+  if (overbought) sell += 45;
+  if (below20) sell += 38;
+  if (e20 < e50) sell += 12;
+  
+  const ultra = rsiTurn && above20 && trendOk && emaSlopeUp && buy >= 85;
+  if (sell >= 75) return { signal: "SELL", quality: "GÜÇLÜ", score: Math.min(100, sell), reason: t("reasonSellStrong") || "RSI yüksek veya fiyat EMA20 altı", ultra: false };
+  if (ultra) return { signal: "BUY", quality: "ULTRA", score: Math.min(100, buy), reason: "Tüm şartlar uyumlu: RSI dönüş + EMA20 üstü + trend + EMA eğimi.", ultra: true };
+  if (buy >= 70) return { signal: "BUY", quality: "GÜÇLÜ", score: Math.min(100, buy), reason: "Çoğu şart uyumlu; trend filtresi destekli.", ultra: false };
+  if (buy >= 55) return { signal: "BUY", quality: "ORTA", score: Math.min(100, buy), reason: "Kısmi uyum var; teyit beklenmeli.", ultra: false };
+  if (sell >= 55) return { signal: "SELL", quality: "ORTA", score: Math.min(100, sell), reason: "Satış baskısı var. İşlem açmadan teyit gerekir.", ultra: false };
+  return { signal: "WAIT", quality: "ZAYIF", score: Math.max(buy, sell), reason: t("reasonWait"), ultra: false };
+}
+
+function riskCalc(price, signal) {
+  if (signal === "WAIT") return null;
+  const riskPct = parseFloat(document.getElementById("riskPct").value) || 2;
+  const balance = parseFloat(document.getElementById("balance").value) || 0;
+  const gap = riskPct / 100;
+  const entry = price;
+  const stop = signal === "BUY" ? entry * (1 - gap) : entry * (1 + gap);
+  const target = signal === "BUY" ? entry * (1 + gap * 2) : entry * (1 - gap * 2);
+  const riskAmount = balance * (riskPct / 100);
+  const unitLoss = Math.abs(entry - stop);
+  const coinAmount = (balance > 0 && unitLoss > 0) ? riskAmount / unitLoss : 0;
+  const positionUSDT = coinAmount * entry;
+  return { entry, stop, target, riskPct, riskAmount, coinAmount, positionUSDT };
+}
+
+// ==================== TELEGRAM ====================
+async function sendTelegram(signalData) {
+  const token = document.getElementById("tgToken").value.trim();
+  const chatId = document.getElementById("tgChat").value.trim();
+  if (!token || !chatId) return;
+  
+  const symbolShort = signalData.symbol.replace("USDT", "");
+  const message = `🚀 ${signalData.signal} ${symbolShort}
+Fiyat: ${fmt(signalData.price)}
+TP: ${signalData.risk ? fmt(signalData.risk.target) : "-"}
+SL: ${signalData.risk ? fmt(signalData.risk.stop) : "-"}
+Skor: ${signalData.score}`;
+  
+  try {
+    await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ chat_id: chatId, text: message, parse_mode: "HTML" })
+    });
+  } catch (e) {
+    console.error("Telegram hatası:", e);
+  }
+}
+
+// ==================== VERİ ÇEKME VE SİNYAL ====================
+async function fetchCoin(symbol) {
+  const interval = document.getElementById("interval").value;
+  const klinesRes = await fetch(`https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=${interval}&limit=${LIMIT}`);
+  const tickerRes = await fetch(`https://api.binance.com/api/v3/ticker/24hr?symbol=${symbol}`);
+  
+  const klines = await klinesRes.json();
+  const ticker = await tickerRes.json();
+  
+  if (!Array.isArray(klines)) throw new Error("Binance data error");
+  
+  const closes = klines.map(k => parseFloat(k[4]));
+  const price = closes[closes.length - 1];
+  const prevPrice = closes[closes.length - 2];
+  const rsiVal = rsi(closes, RSI_PERIOD);
+  const prevRsi = rsi(closes.slice(0, -1), RSI_PERIOD);
+  const e20 = ema(closes, EMA_SHORT);
+  const e20Prev = ema(closes.slice(0, -1), EMA_SHORT);
+  const e50 = ema(closes, EMA_LONG);
+  
+  const signal = signalLogic(price, prevPrice, rsiVal, prevRsi, e20, e50, e20Prev);
+  const risk = riskCalc(price, signal.signal);
+  const change = parseFloat(ticker.priceChangePercent);
+  
+  return { symbol, price, prevPrice, rsi: rsiVal, e20, e50, change, risk, ...signal };
+}
+
+// ==================== RENDER ====================
+function scoreColor(score) {
+  return score >= 80 ? "var(--green)" : score >= 50 ? "var(--yellow)" : "var(--muted)";
+}
+
+function renderCard(d) {
+  const symbolShort = d.symbol.replace("USDT", "");
+  const cls = d.signal === "BUY" ? "buy" : d.signal === "SELL" ? "sell" : "wait";
+  const riskHtml = d.risk ? `<div class="risk"><h4>Risk Paneli</h4>
+    <div class="riskline"><span>${t("entry")}</span><b>${fmt(d.risk.entry)}</b></div>
+    <div class="riskline"><span>${t("stop")}</span><b class="red">${fmt(d.risk.stop)}</b></div>
+    <div class="riskline"><span>${t("target")}</span><b class="green">${fmt(d.risk.target)}</b></div>
+    <div class="riskline"><span>${t("riskAmount")}</span><b class="yellow">${d.risk.riskAmount.toFixed(2)} USDT</b></div>
+    <div class="riskline"><span>${t("position")}</span><b class="blue">${d.risk.positionUSDT.toFixed(2)} USDT</b></div>
+    <div class="riskline"><span>${t("coinAmount")}</span><b>${d.risk.coinAmount.toFixed(6)} ${symbolShort}</b></div></div>` 
+    : `<div class="risk"><h4>Risk Paneli</h4><div class="small">${t("noRisk")}</div></div>`;
+  
+  return `<div class="card ${cls} ${d.ultra ? 'ultra' : ''}">
+    <div class="top"><div class="coin">${symbolShort}/USDT ${d.ultra ? '<span class="ultra-badge">🔥</span>' : ''}</div><div class="badge ${cls}">${d.signal} · ${d.quality}</div></div>
+    <div class="price">${fmt(d.price)}</div><div class="change ${d.change >= 0 ? 'up' : 'down'}">${d.change >= 0 ? '+' : ''}${d.change.toFixed(2)}% / 24s</div>
+    <div class="metrics"><div class="metric"><div class="l">RSI</div><div class="v ${d.rsi < 30 ? 'green' : d.rsi > 70 ? 'red' : 'yellow'}">${d.rsi.toFixed(1)}</div></div>
+    <div class="metric"><div class="l">EMA20</div><div class="v blue">${fmt(d.e20)}</div></div>
+    <div class="metric"><div class="l">EMA50</div><div class="v blue">${fmt(d.e50)}</div></div></div>
+    <div class="scorebar"><div class="scorefill" style="width:${d.score}%;background:${scoreColor(d.score)}"></div></div>
+    <div class="reason">${d.reason}<br><span class="small">Skor: ${d.score}/100</span></div>${riskHtml}
+    <div class="trade-actions"><button class="btn trade-buy" onclick="window.paperTrade('${d.symbol}','BUY')">MARKET BUY</button><button class="btn trade-sell" onclick="window.paperTrade('${d.symbol}','SELL')">MARKET SELL</button></div>
+  </div>`;
+}
+
+function renderUltra() {
+  const ultras = lastData.filter(x => x.ultra);
+  const ultraBox = document.getElementById("ultraBox");
+  if (ultraBox) {
+    ultraBox.classList.toggle("show", ultras.length > 0);
+    document.getElementById("ultraList").innerHTML = ultras.length ? ultras.map(x => `<div class="ultra-chip">${x.symbol.replace("USDT", "")} · ${x.score}/100 · ${fmt(x.price)}</div>`).join("") : "";
+  }
+}
+
+function renderAll() {
+  if (lastData.length) {
+    document.getElementById("cards").innerHTML = lastData.map(renderCard).join("");
+    renderUltra();
+  }
+}
+
+function addLog(html) {
+  const logDiv = document.getElementById("log");
+  const entry = document.createElement("div");
+  entry.className = "logitem";
+  entry.innerHTML = html;
+  logDiv.prepend(entry);
+  while (logDiv.children.length > 100) logDiv.removeChild(logDiv.lastChild);
+}
+
+function shouldAlert(d) {
+  const mode = document.getElementById("alertMode").value;
+  if (d.signal === "WAIT") return false;
+  if (mode === "all") return true;
+  if (mode === "strong") return d.quality === "GÜÇLÜ" || d.quality === "ULTRA";
+  return d.quality === "ULTRA";
+}
+
+// ==================== PAPER TRADE ====================
+window.paperTrade = function(symbol, side) {
+  const coinData = lastData.find(x => x.symbol === symbol);
+  if (!coinData || !coinData.risk) {
+    alert("Risk hesaplanamadı veya veri yok");
+    return;
+  }
+  const newTrade = {
+    id: Date.now() + Math.random(),
+    symbol: symbol,
+    side: side,
+    entryPrice: coinData.price,
+    exitPrice: null,
+    positionSize: coinData.risk.positionUSDT,
+    stopLoss: coinData.risk.stop,
+    target: coinData.risk.target,
+    qty: coinData.risk.coinAmount,
+    status: "OPEN",
+    openDate: new Date().toISOString(),
+    closeDate: null,
+    pnl: 0,
+    pnlPercent: 0
+  };
+  trades.push(newTrade);
+  localStorage.setItem("kpk_paperTrades", JSON.stringify(trades));
+  updateTradeStats();
+  renderTradeList();
+  addLog(`📌 Paper ${side} açıldı: ${symbol.replace("USDT", "")} @ ${fmt(newTrade.entryPrice)} (${newTrade.positionSize.toFixed(2)} USDT)`);
+};
+
+window.closeTrade = function(tradeId, currentPrice, reason = "Manuel Kapat") {
+  const index = trades.findIndex(t => t.id == tradeId && t.status === "OPEN");
+  if (index === -1) return;
+  const trade = trades[index];
+  const pnlRaw = trade.side === "BUY" ? (currentPrice - trade.entryPrice) * trade.qty : (trade.entryPrice - currentPrice) * trade.qty;
+  trade.pnl = pnlRaw;
+  trade.pnlPercent = (pnlRaw / trade.positionSize) * 100;
+  trade.exitPrice = currentPrice;
+  trade.status = "CLOSED";
+  trade.closeDate = new Date().toISOString();
+  trades[index] = trade;
+  localStorage.setItem("kpk_paperTrades", JSON.stringify(trades));
+  updateTradeStats();
+  renderTradeList();
+  addLog(`🔒 ${reason} ile trade kapandı: ${trade.symbol.replace("USDT", "")} ${trade.side} PnL: ${pnlRaw.toFixed(2)} USDT (${trade.pnlPercent.toFixed(2)}%)`);
+};
+
+function updateTradeStats() {
+  const closed = trades.filter(t => t.status === "CLOSED");
+  const wins = closed.filter(t => t.pnl > 0).length;
+  const losses = closed.filter(t => t.pnl < 0).length;
+  const totalPnL = closed.reduce((s, t) => s + (t.pnl || 0), 0);
+  const winrate = closed.length ? (wins / closed.length * 100).toFixed(1) : 0;
+  document.getElementById("t_total").innerText = trades.length;
+  document.getElementById("t_win").innerText = wins;
+  document.getElementById("t_loss").innerText = losses;
+  document.getElementById("t_wr").innerText = winrate + "%";
+  const pnlElem = document.getElementById("t_pnl");
+  if (pnlElem) pnlElem.innerHTML = totalPnL >= 0 ? `+${totalPnL.toFixed(2)} USDT` : `${totalPnL.toFixed(2)} USDT`;
+}
+
+function renderTradeList() {
+  const container = document.getElementById("tradeList");
+  if (!container) return;
+  if (trades.length === 0) {
+    container.innerHTML = "<div class='small'>Henüz paper trade yok. Sinyal kartlarından MARKET BUTONUNA tıklayın.</div>";
+    return;
+  }
+  let html = "";
+  trades.slice().reverse().forEach(t => {
+    const statusBadge = t.status === "OPEN" ? `<span class="green">AÇIK</span>` : `<span class="muted">KAPALI</span>`;
+    let closeAction = "";
+    if (t.status === "OPEN") {
+      const currentCoin = lastData.find(c => c.symbol === t.symbol);
+      const nowPrice = currentCoin ? currentCoin.price : t.entryPrice;
+      closeAction = `<button class="btn" style="font-size:10px;padding:4px 8px" onclick="window.closeTrade(${t.id}, ${nowPrice}, 'Manuel Kapat')">Kapat (${fmt(nowPrice)})</button>`;
+    }
+    html += `<div class="trade-item"><div><b>${t.symbol.replace("USDT", "")}</b> ${t.side} | Giriş: ${fmt(t.entryPrice)}<br><span class="close-date">${new Date(t.openDate).toLocaleString()}</span></div>
+    <div>${t.status === "CLOSED" ? `Çıkış: ${fmt(t.exitPrice)}<br>PnL: ${t.pnl >= 0 ? '+' : ''}${t.pnl.toFixed(2)} USDT (${t.pnlPercent.toFixed(2)}%)` : `Poz: ${t.positionSize.toFixed(2)} USDT`}</div>
+    <div>${statusBadge} ${closeAction}</div></div>`;
+  });
+  container.innerHTML = html;
+}
+
+// ==================== REFRESH (ANA FONKSİYON) ====================
+async function refresh() {
+  try {
+    const results = [];
+    for (const coin of COINS) {
+      try {
+        const data = await fetchCoin(coin);
+        results.push(data);
+      } catch (err) {
+        console.error(`${coin} hatası:`, err);
+        results.push({ symbol: coin, signal: "WAIT", score: 0, error: true });
+      }
+    }
+    
+    lastData = results.filter(r => !r.error).sort((a, b) => b.score - a.score);
+    renderAll();
+    renderTradeList();
+    
+    // Telegram kontrolü
+    const now = Date.now();
+    for (const d of lastData) {
+      if ((d.signal === "BUY" || d.signal === "SELL") && d.score >= MIN_SCORE && shouldAlert(d)) {
+        const lastTime = lastSent[d.symbol] || 0;
+        if (now - lastTime > COOLDOWN_MS) {
+          addLog(`<b>${new Date().toLocaleTimeString("tr-TR")}</b> - ${d.symbol} ${d.signal} (${d.score})`);
+         await sendTelegramMessage(
+`🚀 ${d.symbol} ${d.signal}
+
+Giriş: ${d.price}
+Hedef: ${d.target}
+Stop: ${d.stop}
+
+Risk: %1-2
+
+VIP sinyaller:
+wa.me/905446452430`
+);
+          lastSent[d.symbol] = now;
+          localStorage.setItem("kpk_lastSent", JSON.stringify(lastSent));
+        }
+      }
+    }
+    
+    // Auto TP/SL kontrolü
+    for (const trade of trades) {
+      if (trade.status !== "OPEN") continue;
+      const coinData = lastData.find(c => c.symbol === trade.symbol);
+      if (!coinData) continue;
+      const price = coinData.price;
+      if (trade.side === "BUY") {
+        if (price >= trade.target) window.closeTrade(trade.id, price, "TP");
+        else if (price <= trade.stopLoss) window.closeTrade(trade.id, price, "SL");
+      } else if (trade.side === "SELL") {
+        if (price <= trade.target) window.closeTrade(trade.id, price, "TP");
+        else if (price >= trade.stopLoss) window.closeTrade(trade.id, price, "SL");
+      }
+    }
+    
+    document.getElementById("liveText").innerText = t("active");
+    document.getElementById("lastUpdate").innerHTML = t("updated") + ": " + new Date().toLocaleTimeString(getLang() === "tr" ? "tr-TR" : "en-US");
+  } catch (err) {
+    console.error("Refresh hatası:", err);
+    document.getElementById("liveText").innerText = "Hata! Yeniden deneniyor...";
+  }
+}
+
+// ==================== DİĞER UI FONKSİYONLARI ====================
+function applyLang() {
+  document.querySelectorAll("[data-i]").forEach(el => {
+    const key = el.dataset.i;
+    if (translations[getLang()][key]) el.innerHTML = translations[getLang()][key];
+  });
+  document.getElementById("guideText").innerHTML = t("guide");
+  document.documentElement.lang = getLang();
+}
+
+function saveSettings() {
+  const newSettings = {
+    interval: document.getElementById("interval").value,
+    balance: document.getElementById("balance").value,
+    riskPct: document.getElementById("riskPct").value,
+    tgToken: document.getElementById("tgToken").value.trim(),
+    tgChat: document.getElementById("tgChat").value.trim(),
+    alertMode: document.getElementById("alertMode").value,
+    backendUrl: document.getElementById("backendUrl").value.trim(),
+    lang: document.getElementById("lang").value,
+    theme: document.body.classList.contains("light") ? "light" : "dark"
+  };
+  localStorage.setItem("kpk_settings", JSON.stringify(newSettings));
+}
+
+function loadSettings() {
+  if (settings.interval) document.getElementById("interval").value = settings.interval;
+  if (settings.balance) document.getElementById("balance").value = settings.balance;
+  if (settings.riskPct) document.getElementById("riskPct").value = settings.riskPct;
+  if (settings.tgToken) document.getElementById("tgToken").value = settings.tgToken;
+  if (settings.tgChat) document.getElementById("tgChat").value = settings.tgChat;
+  if (settings.alertMode) document.getElementById("alertMode").value = settings.alertMode;
+  if (settings.backendUrl) document.getElementById("backendUrl").value = settings.backendUrl;
+  if (settings.lang) document.getElementById("lang").value = settings.lang;
+  if (settings.theme === "light") document.body.classList.add("light");
+  document.getElementById("themeBtn").textContent = document.body.classList.contains("light") ? "☀️" : "🌙";
+  applyLang();
+}
+
+function toggleTheme() {
+  document.body.classList.toggle("light");
+  document.getElementById("themeBtn").textContent = document.body.classList.contains("light") ? "☀️" : "🌙";
+  saveSettings();
+}
+// SIGNAL ENGINE
+if (!window.lastSignal) window.lastSignal = {};
+
+function triggerSignal(symbol, signal, price) {
+  const key = symbol;
+
+  if (window.lastSignal[key] === signal) return;
+
+  window.lastSignal[key] = signal;
+
+  sendTelegramMessage(`🚀 ${signal}\n${symbol}\nFiyat: ${price}`);
+}
+function closeModal() {
+  document.getElementById("tradeModal").classList.remove("show");
+}
+async function sendTelegramMessage(text) {
+  const token = document.getElementById("tgToken").value.trim();
+  const chatId = document.getElementById("tgChat").value.trim();
+
+  if (!token || !chatId) {
+    alert("Telegram Token veya Chat ID boş");
+    return;
+  }
+
+  try {
+    const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        chat_id: chatId,
+        text: text
+      })
+    });
+
+    const data = await res.json();
+    console.log("Telegram:", data);
+
+    if (!data.ok) {
+      alert("Telegram hata: " + data.description);
+    }
+  } catch (err) {
+    alert("Telegram bağlantı hatası");
+    console.error(err);
+  }
+}
+// ==================== EVENT LISTENER & INIT ====================
+document.getElementById("refreshBtn").addEventListener("click", refresh);
+document.getElementById("themeBtn").addEventListener("click", toggleTheme);
+document.getElementById("lang").addEventListener("change", () => { saveSettings(); applyLang(); refresh(); });
+document.getElementById("interval").addEventListener("change", refresh);
+document.getElementById("balance").addEventListener("change", saveSettings);
+document.getElementById("riskPct").addEventListener("change", saveSettings);
+document.getElementById("alertMode").addEventListener("change", saveSettings);
+document.getElementById("tgToken").addEventListener("change", saveSettings);
+document.getElementById("tgChat").addEventListener("change", saveSettings);
+document.getElementById("backendUrl").addEventListener("change", saveSettings);
+
+document.getElementById("closeModalBtn").addEventListener("click", closeModal);
+
+loadSettings();
+refresh();
+setInterval(refresh, 30000);
+</script>
+</body>
+</html>
