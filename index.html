@@ -832,8 +832,11 @@ function qualClass(q){
   if(q==="ORTA"||q==="MID")return"mid";
   return"weak";
 }
-
+function trackView(symbol){
+    console.log("View tracked for: " + symbol);
+}
 function renderCard(d){
+trackView(d.symbol);
   const sn=d.symbol.replace("USDT","");
   const cls=d.signal==="BUY"?"buy":d.signal==="SELL"?"sell":"wait";
   const rsiCls=d.rsi<30?"green":d.rsi>70?"red":"yellow";
