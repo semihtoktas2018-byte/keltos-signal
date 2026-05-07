@@ -30,6 +30,29 @@ body:not(.light)::before{content:"";position:fixed;inset:0;pointer-events:none;o
 .container{position:relative;z-index:1;max-width:1400px;margin:auto;padding:22px}
 
 /* HEADER */
+.coin-search-wrap{
+display:flex;
+gap:10px;
+margin-bottom:12px;
+flex-wrap:wrap;
+}
+
+.coin-search-input{
+background:var(--panel);
+border:1px solid var(--border);
+color:var(--text);
+padding:12px 14px;
+border-radius:12px;
+outline:none;
+min-width:260px;
+font-size:14px;
+transition:.2s;
+}
+
+.coin-search-input:focus{
+border-color:var(--blue);
+box-shadow:0 0 12px rgba(56,189,248,.25);
+}
 .header{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;padding:24px 0 18px;border-bottom:1px solid var(--border);margin-bottom:16px}
 .brand h1{font-size:28px;font-weight:900;letter-spacing:-.6px}
 .brand .sub{font-size:12px;color:var(--muted);margin-top:6px}
@@ -206,6 +229,15 @@ pre{white-space:pre-wrap;background:var(--panel2);border:1px solid var(--border)
       <div class="sub" data-i="subtitle">v5.0 Final · RSI + EMA + MACD + Bollinger + Hacim + Çoklu TF + Backtest + Paper Trade</div>
     </div>
     <div class="header-actions">
+<div class="coin-search-wrap">
+  <input 
+    type="text" 
+    id="coinSearch"
+    placeholder="Coin ara... (BTC, XRP, DOGE)"
+    class="coin-search-input"
+  />
+  <button id="addCoinBtn" class="btn">Ekle</button>
+</div>
       <select class="pill" id="lang"><option value="tr">🇹🇷 TR</option><option value="en">🇬🇧 EN</option></select>
       <button class="btn" id="themeBtn">🌙</button>
       <button class="btn" id="refreshBtn">↻ Yenile</button>
@@ -1064,6 +1096,32 @@ function restartAutoRefresh(){
 ══════════════════════ */
 document.getElementById("refreshBtn").addEventListener("click",()=>{refresh();restartAutoRefresh();});
 document.getElementById("themeBtn").addEventListener("click",toggleTheme);
+document.getElementById("addCoinBtn").addEventListener("click",()=>{
+
+const input = document.getElementById("coinSearch");
+
+if(!input) return;
+
+let value = input.value.trim().toUpperCase();
+
+if(!value) return;
+
+if(!value.endsWith("USDT")){
+value += "USDT";
+}
+
+if(COINS.includes(value)){
+alert("Bu coin zaten ekli.");
+return;
+}
+
+COINS.push(value);
+
+refresh();
+
+input.value = "";
+
+});
 document.getElementById("lang").addEventListener("change",()=>{saveSettings();applyLang();refresh();restartAutoRefresh();});
 document.getElementById("interval").addEventListener("change",()=>{saveSettings();refresh();restartAutoRefresh();});
 document.getElementById("closeModalBtn").addEventListener("click",()=>document.getElementById("tradeModal").classList.remove("show"));
