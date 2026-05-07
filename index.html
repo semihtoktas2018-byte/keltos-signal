@@ -118,6 +118,20 @@ z-index:5;
 background:#ff4d4d;
 color:white;
 }
+.card .fav-btn{
+position:absolute;
+top:10px;
+right:45px;
+width:28px;
+height:28px;
+border:none;
+border-radius:50%;
+background:rgba(255,215,0,.12);
+color:gold;
+cursor:pointer;
+font-size:16px;
+font-weight:700;
+}
 .coin-name{font-weight:900;font-size:16px}
 .badge-wrap{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
 .badge{font-weight:700;font-size:11px;border-radius:999px;padding:5px 11px;white-space:nowrap}
@@ -414,11 +428,17 @@ let lastData = [];
 let trades = [];
 let lastSent = {};
 let settings = {};
+let favorites = [];
 let refreshTimer = null;
 
 try { trades   = JSON.parse(localStorage.getItem("kpk_trades")   || "[]"); } catch(e){ trades=[]; }
 try { lastSent  = JSON.parse(localStorage.getItem("kpk_lastSent") || "{}"); } catch(e){ lastSent={}; }
 try { settings  = JSON.parse(localStorage.getItem("kpk_settings") || "{}"); } catch(e){ settings={}; }
+try{
+favorites = JSON.parse(localStorage.getItem("kpk_favorites")) || [];
+}catch(e){
+favorites = [];
+}
 
 /* ══════════════════════
    DİL
@@ -801,6 +821,10 @@ function renderCard(d){
   return`<div class="card ${cls}${d.ultra?" ultra":""}">
     <div class="card-top">
 <button class="remove-btn" onclick="removeCoin('${d.symbol}')">✕</button>
+<button class="fav-btn"
+onclick="toggleFavorite('${d.symbol}')">
+${favorites.includes(d.symbol) ? "⭐" : "☆"}
+</button>
       <div class="coin-name">${sn}/USDT ${d.ultra?"🔥":""}</div>
       <div class="badge-wrap">
         <span class="badge ${cls}">${d.signal}</span>
@@ -859,9 +883,21 @@ function renderUltra(){
 }
 
 function renderAll(){
-  if(lastData.length) document.getElementById("cards").innerHTML=lastData.map(renderCard).join("");
-  renderUltra();
+
+if(lastData.length){
+
+const sorted = [...lastData].sort((a,b)=>{
+return favorites.includes(b.symbol) - favorites.includes(a.symbol);
+});
+
+document.getElementById("cards").innerHTML =
+sorted.map(renderCard).join("");
+
 }
+
+renderUltra();
+}
+
 function removeCoin(symbol){
 
 const index = COINS.indexOf(symbol);
@@ -870,11 +906,32 @@ if(index === -1) return;
 
 COINS.splice(index,1);
 
-localStorage.setItem("kpk_coins", JSON.stringify(COINS));
+localStorage.setItem(
+"kpk_coins",
+JSON.stringify(COINS)
+);
 
 refresh();
 
 }
+
+function toggleFavorite(symbol){
+
+if(favorites.includes(symbol)){
+favorites = favorites.filter(x=>x!==symbol);
+}else{
+favorites.push(symbol);
+}
+
+localStorage.setItem(
+"kpk_favorites",
+JSON.stringify(favorites)
+);
+
+renderAll();
+
+}
+
 function addLog(html){
   const log=document.getElementById("log");
   if(!log)return;
