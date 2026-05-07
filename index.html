@@ -1109,6 +1109,13 @@ async function refresh(){
         const last=lastSent[d.symbol]||0;
         if(now-last>COOLDOWN_MS&&window.lastSignal[d.symbol]!==d.signal){
           addLog(`<b>${new Date().toLocaleTimeString("tr-TR")}</b> — ${d.symbol} <b>${d.signal}</b> (${d.quality} · ${d.score}/100)`);
+if(
+d.score < 60 ||
+d.signal === "WAIT" ||
+d.quality === "ZAYIF"
+){
+return;
+}
           await sendTelegramMessage(buildTgMessage(d));
           lastSent[d.symbol]=now;
           window.lastSignal[d.symbol]=d.signal;
