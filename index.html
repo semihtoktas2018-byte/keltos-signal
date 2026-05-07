@@ -378,6 +378,14 @@ const RSI_PERIOD = 14;
 const EMA_SHORT = 20;
 const EMA_LONG = 50;
 const COOLDOWN_MS = 5 * 60 * 1000;
+try{
+const savedCoins = JSON.parse(localStorage.getItem("kpk_coins"));
+
+if(Array.isArray(savedCoins) && savedCoins.length){
+COINS.length = 0;
+savedCoins.forEach(c=>COINS.push(c));
+}
+}catch(e){}
 
 /* ══════════════════════
    STATE
@@ -1116,6 +1124,7 @@ return;
 }
 
 COINS.push(value);
+localStorage.setItem("kpk_coins", JSON.stringify(COINS));
 
 refresh();
 
