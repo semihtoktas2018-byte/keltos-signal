@@ -916,7 +916,10 @@ ${favorites.includes(d.symbol) ? "⭐" : "☆"}
 }
 
 function renderUltra(){
-  const ul=lastData.filter(x=>x.ultra);
+ const ul = lastData.filter(x =>
+x.score >= 50 &&
+x.signal !== "WAIT"
+);
   const box=document.getElementById("ultraBox");
   if(!box)return;
   box.classList.toggle("show",ul.length>0);
