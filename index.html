@@ -91,6 +91,47 @@ input:focus,select:focus{border-color:var(--blue)}
 .ultra-chip{border:1px solid rgba(34,197,94,.4);background:rgba(34,197,94,.1);padding:8px 12px;border-radius:12px;font-size:12px;font-weight:800;cursor:pointer}
 
 /* COIN GRID */
+.ultra-box{
+display:none;
+margin-bottom:16px;
+padding:14px;
+border:1px solid rgba(255,140,0,.35);
+background:rgba(255,140,0,.06);
+border-radius:16px;
+}
+
+.ultra-box.show{
+display:block;
+}
+
+.ultra-title{
+font-size:14px;
+font-weight:800;
+margin-bottom:10px;
+color:#ffb347;
+}
+
+.ultra-list{
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+}
+
+.ultra-chip{
+padding:10px 14px;
+border-radius:999px;
+background:rgba(255,140,0,.12);
+border:1px solid rgba(255,140,0,.25);
+font-size:13px;
+font-weight:700;
+cursor:pointer;
+transition:.2s;
+}
+
+.ultra-chip:hover{
+transform:translateY(-2px);
+background:rgba(255,140,0,.18);
+}
 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:14px}
 .card{position:relative;background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:16px;box-shadow:0 14px 38px var(--shadow);transition:transform .2s}
 .card:hover{transform:translateY(-2px)}
