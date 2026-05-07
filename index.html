@@ -820,7 +820,7 @@ function renderCard(d){
 
   return`<div class="card ${cls}${d.ultra?" ultra":""}">
     <div class="card-top">
-<button class="remove-btn" onclick="removeCoin('${d.symbol}')">✕</button>
+<button class="remove-btn" onclick="removeCoin('${d.symbol}')">×</button>
 <button class="fav-btn"
 onclick="toggleFavorite('${d.symbol}')">
 ${favorites.includes(d.symbol) ? "⭐" : "☆"}
