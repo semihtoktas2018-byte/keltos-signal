@@ -6,32 +6,7 @@
 <title>KELTOŞ PARAYA KOŞ v5.0</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-V35DXZ4KYF">
-setInterval(()=>{
-
-const samples=[
-
-["XRP BUY",2.8],
-["DOGE SELL",-1.2],
-["AVAX BUY",3.4],
-["SOL BUY",1.9],
-["LINK SELL",-0.8],
-["BNB BUY",2.2]
-
-];
-
-const rnd =
-samples[Math.floor(Math.random()*samples.length)];
-
-pushFeed(
-rnd[0],
-"signal",
-rnd[1]
-);
-
-},9000);
-
-</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-V35DXZ4KYF"></script>
 <script>
 window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
@@ -1220,6 +1195,76 @@ transform:translateY(0);
 }
 }
 
+
+
+/* FINAL HERO MOTION PATCH */
+.ticker-item{
+display:flex;
+align-items:center;
+gap:7px;
+position:relative;
+padding:0 4px;
+transition:.25s;
+}
+
+.ticker-item:hover{
+transform:translateY(-2px) scale(1.04);
+color:#fff;
+text-shadow:0 0 12px currentColor;
+}
+
+.ticker-item::after{
+content:"";
+position:absolute;
+left:0;
+right:0;
+bottom:-6px;
+height:1px;
+background:currentColor;
+opacity:0;
+transition:.25s;
+}
+
+.ticker-item:hover::after{opacity:.7;}
+.btc{color:#f59e0b}.eth{color:#a78bfa}.xrp{color:#38bdf8}.doge{color:#facc15}.sol{color:#22c55e}.avax{color:#ef4444}.link{color:#0ea5e9}.pepe{color:#84cc16}
+
+.hero-main-card,.mini-radar-card,.hero-stat{
+transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease;
+}
+
+.hero-main-card:hover,.mini-radar-card:hover{
+transform:translateY(-3px);
+border-color:rgba(56,189,248,.32);
+box-shadow:0 28px 60px rgba(0,0,0,.42),0 0 28px rgba(56,189,248,.10);
+}
+
+.hero-stat:hover{
+transform:translateY(-2px);
+border-color:rgba(56,189,248,.18);
+}
+
+.mini-radar-card.orange{
+animation:riskPulse 3.2s ease-in-out infinite;
+}
+
+@keyframes riskPulse{
+0%,100%{box-shadow:0 15px 35px rgba(0,0,0,.28),0 0 0 rgba(245,158,11,0)}
+50%{box-shadow:0 15px 35px rgba(0,0,0,.28),0 0 24px rgba(245,158,11,.12)}
+}
+
+.lifecycle-pill{
+display:inline-flex;
+align-items:center;
+gap:6px;
+padding:7px 10px;
+border-radius:999px;
+background:rgba(56,189,248,.08);
+border:1px solid rgba(56,189,248,.16);
+font-size:11px;
+font-weight:800;
+color:#7dd3fc;
+}
+
 </style>
 </head>
 <body>
@@ -1262,23 +1307,25 @@ transform:translateY(0);
 
       <div class="market-track">
 
-        <span>BTC +2.14%</span>
-        <span>ETH +1.28%</span>
-        <span>XRP +5.82%</span>
-        <span>DOGE -1.21%</span>
-        <span>SOL +3.92%</span>
-        <span>AVAX +4.11%</span>
-        <span>LINK +2.31%</span>
-        <span>PEPE +7.88%</span>
+        <span class="ticker-item btc">₿ BTC +2.14%</span>
+        <span class="ticker-item eth">◆ ETH +1.28%</span>
+        <span class="ticker-item xrp">✕ XRP +5.82%</span>
+        <span class="ticker-item doge">🐕 DOGE -1.21%</span>
+        <span class="ticker-item sol">◎ SOL +3.92%</span>
+        <span class="ticker-item avax">🔺 AVAX +4.11%</span>
+        <span class="ticker-item link">⬢ LINK +2.31%</span>
+        <span class="ticker-item pepe">🐸 PEPE +7.88%</span>
 
-        <span>BTC +2.14%</span>
-        <span>ETH +1.28%</span>
-        <span>XRP +5.82%</span>
-        <span>DOGE -1.21%</span>
-        <span>SOL +3.92%</span>
-        <span>AVAX +4.11%</span>
-        <span>LINK +2.31%</span>
-        <span>PEPE +7.88%</span>
+        <span class="ticker-item btc">₿ BTC +2.14%</span>
+        <span class="ticker-item eth">◆ ETH +1.28%</span>
+        <span class="ticker-item xrp">✕ XRP +5.82%</span>
+        <span class="ticker-item doge">🐕 DOGE -1.21%</span>
+        <span class="ticker-item sol">◎ SOL +3.92%</span>
+        <span class="ticker-item avax">🔺 AVAX +4.11%</span>
+        <span class="ticker-item link">⬢ LINK +2.31%</span>
+        <span class="ticker-item pepe">🐸 PEPE +7.88%</span>
+
+      
 
       </div>
 
@@ -1308,17 +1355,17 @@ transform:translateY(0);
 
         <div class="hero-stat">
           <span class="hero-stat-label">AKTİF RADAR</span>
-          <span class="hero-stat-value">24 COIN</span>
+          <span class="hero-stat-value" id="heroActiveCoins">24 COIN</span>
         </div>
 
         <div class="hero-stat">
           <span class="hero-stat-label">YÜKSEK HACİM</span>
-          <span class="hero-stat-value">XRP / DOGE</span>
+          <span class="hero-stat-value" id="heroVolumeCoins">XRP / DOGE</span>
         </div>
 
         <div class="hero-stat">
           <span class="hero-stat-label">BUGÜN</span>
-          <span class="hero-stat-value green">+12 SİNYAL</span>
+          <span class="hero-stat-value green" id="heroSignalCount">+12 SİNYAL</span>
         </div>
 
       </div>
@@ -1330,16 +1377,16 @@ transform:translateY(0);
 
       <div class="mini-radar-card blue">
         <div class="mini-label">GÜNÜN RADARI</div>
-        <div class="mini-title">🔥 XRP BREAKOUT</div>
-        <div class="mini-desc">
+        <div class="mini-title" id="heroRadarTitle">🔥 XRP BREAKOUT</div>
+        <div class="mini-desc" id="heroRadarDesc">
           EMA kırılımı + güçlü momentum
         </div>
       </div>
 
       <div class="mini-radar-card orange">
         <div class="mini-label">YÜKSEK RİSK</div>
-        <div class="mini-title">⚠ DOGE VOLATİL</div>
-        <div class="mini-desc">
+        <div class="mini-title" id="heroRiskTitle">⚠ DOGE VOLATİL</div>
+        <div class="mini-desc" id="heroRiskDesc">
           Ani yön değişimi algılandı
         </div>
       </div>
@@ -1533,6 +1580,8 @@ let lastSent = {};
 let settings = {};
 let favorites = [];
 let refreshTimer = null;
+let openSignals = {};
+let signalResults = [];
 
 try { trades   = JSON.parse(localStorage.getItem("kpk_trades")   || "[]"); } catch(e){ trades=[]; }
 try { lastSent  = JSON.parse(localStorage.getItem("kpk_lastSent") || "{}"); } catch(e){ lastSent={}; }
@@ -1541,6 +1590,16 @@ try{
 favorites = JSON.parse(localStorage.getItem("kpk_favorites")) || [];
 }catch(e){
 favorites = [];
+}
+try{
+openSignals = JSON.parse(localStorage.getItem("kpk_openSignals")) || {};
+}catch(e){
+openSignals = {};
+}
+try{
+signalResults = JSON.parse(localStorage.getItem("kpk_signalResults")) || [];
+}catch(e){
+signalResults = [];
 }
 
 /* ══════════════════════
@@ -1662,70 +1721,156 @@ function emitLiveMarketAlert(data){
 }
 
 
-const liveFeedData=[];
 
-function pushFeed(symbol,type,pnl){
-
-const list=document.getElementById("feedList");
-
-if(!list)return;
-
-const item=document.createElement("div");
-
-const positive=pnl>=0;
-
-item.className="feed-item";
-
-item.innerHTML=`
-
-<div class="feed-left">
-<div class="feed-symbol">
-${positive ? "✅" : "❌"} ${symbol}
-</div>
-
-<div class="feed-desc">
-${type} → ${positive ? "TP HIT" : "STOP HIT"}
-</div>
-</div>
-
-<div class="feed-pnl ${positive ? "green":"red"}">
-${positive ? "+" : ""}${pnl.toFixed(1)}%
-</div>
-
-`;
-
-list.prepend(item);
-
-if(list.children.length > 14){
-list.removeChild(list.lastChild);
+function saveSignalState(){
+localStorage.setItem("kpk_openSignals", JSON.stringify(openSignals || {}));
+localStorage.setItem("kpk_signalResults", JSON.stringify(signalResults || []));
 }
 
-liveFeedData.unshift({
-positive
-});
+function pushFeed(symbol,type,pnl,meta={}){
+const list=document.getElementById("feedList");
+const positive=pnl>=0;
+
+const record={
+id:meta.id || Date.now()+Math.random(),
+symbol,
+type,
+pnl,
+positive,
+time:meta.time || new Date().toISOString(),
+result:meta.result || (positive ? "TP HIT" : "STOP HIT")
+};
+
+if(!meta.skipStore){
+signalResults.unshift(record);
+signalResults = signalResults.slice(0,50);
+saveSignalState();
+}
+
+if(list){
+const item=document.createElement("div");
+item.className="feed-item";
+item.innerHTML=`
+<div class="feed-left">
+<div class="feed-symbol">${positive ? "✅" : "❌"} ${symbol}</div>
+<div class="feed-desc">${type} → ${record.result}</div>
+</div>
+<div class="feed-pnl ${positive ? "green":"red"}">${positive ? "+" : ""}${pnl.toFixed(2)}%</div>
+`;
+list.prepend(item);
+if(list.children.length > 14){ list.removeChild(list.lastChild); }
+}
 
 updateFeedStats();
+}
 
+function renderSignalResults(){
+const list=document.getElementById("feedList");
+if(!list)return;
+list.innerHTML="";
+(signalResults || []).slice(0,14).reverse().forEach(r=>{
+pushFeed(r.symbol,r.type,r.pnl,{...r,skipStore:true});
+});
+updateFeedStats();
 }
 
 function updateFeedStats(){
-
-const wins=liveFeedData.filter(x=>x.positive).length;
-const losses=liveFeedData.filter(x=>!x.positive).length;
+const data=signalResults || [];
+const wins=data.filter(x=>x.positive).length;
+const losses=data.filter(x=>!x.positive).length;
 const total=wins+losses;
-
-const wr=total
-? Math.round((wins/total)*100)
-: 0;
-
+const wr=total ? Math.round((wins/total)*100) : 0;
 const wrEl=document.getElementById("winRate");
 const tpEl=document.getElementById("tpCount");
 const slEl=document.getElementById("slCount");
-
 if(wrEl)wrEl.innerText = wr+"%";
 if(tpEl)tpEl.innerText = wins;
 if(slEl)slEl.innerText = losses;
+}
 
+function getLifecycleKey(symbol){
+return String(symbol || "").toUpperCase();
+}
+
+function openLifecycleSignal(d){
+if(!d || !d.risk || d.signal === "WAIT" || d.score < 55)return;
+const key=getLifecycleKey(d.symbol);
+if(openSignals[key])return;
+openSignals[key]={
+id:Date.now()+"_"+key,
+symbol:d.symbol,
+side:d.signal,
+entry:d.risk.entry,
+stop:d.risk.stop,
+target:d.risk.target,
+score:d.score,
+quality:d.quality,
+openedAt:new Date().toISOString()
+};
+saveSignalState();
+addLog(`🟢 Lifecycle açıldı: <b>${d.symbol.replace("USDT","")}</b> ${d.signal} · Skor ${d.score}/100`);
+pushLiveAlert(`📌 ${d.signal} izlemeye alındı`, `${d.symbol.replace("USDT","")} TP/SL takibine girdi. Skor: ${d.score}/100`, d.signal==="BUY"?"buy":"sell");
+}
+
+function closeLifecycleSignal(key, price, result){
+const sig=openSignals[key];
+if(!sig)return;
+const pnlPct=sig.side==="BUY"
+? ((price-sig.entry)/sig.entry)*100
+: ((sig.entry-price)/sig.entry)*100;
+const symbolLabel=`${sig.symbol.replace("USDT","")} ${sig.side}`;
+pushFeed(symbolLabel,"auto",pnlPct,{result});
+addLog(`${result.includes("TP")?"✅":"❌"} ${result}: <b>${symbolLabel}</b> · ${pnlPct>=0?"+":""}${pnlPct.toFixed(2)}%`);
+pushLiveAlert(result.includes("TP")?`✅ TP HIT: ${sig.symbol.replace("USDT","")}`:`❌ STOP HIT: ${sig.symbol.replace("USDT","")}`, `${sig.side} sonucu: ${pnlPct>=0?"+":""}${pnlPct.toFixed(2)}%`, result.includes("TP")?"buy":"sell");
+delete openSignals[key];
+saveSignalState();
+}
+
+function trackSignals(data){
+if(!Array.isArray(data) || !data.length)return;
+
+Object.keys(openSignals || {}).forEach(key=>{
+const sig=openSignals[key];
+const d=data.find(x=>x.symbol===sig.symbol);
+if(!d || !Number.isFinite(d.price))return;
+const p=d.price;
+if(sig.side==="BUY"){
+if(p>=sig.target) closeLifecycleSignal(key,p,"TP HIT");
+else if(p<=sig.stop) closeLifecycleSignal(key,p,"STOP HIT");
+}else if(sig.side==="SELL"){
+if(p<=sig.target) closeLifecycleSignal(key,p,"TP HIT");
+else if(p>=sig.stop) closeLifecycleSignal(key,p,"STOP HIT");
+}
+});
+
+const candidates=data
+.filter(d=>d && d.risk && d.signal!=="WAIT" && d.score>=55 && d.quality!=="ZAYIF")
+.sort((a,b)=>(b.score||0)-(a.score||0));
+
+candidates.forEach(openLifecycleSignal);
+updateFeedStats();
+}
+
+function updateHeroDynamics(data){
+if(!Array.isArray(data) || !data.length)return;
+const active=document.getElementById("heroActiveCoins");
+const vol=document.getElementById("heroVolumeCoins");
+const count=document.getElementById("heroSignalCount");
+const radarTitle=document.getElementById("heroRadarTitle");
+const radarDesc=document.getElementById("heroRadarDesc");
+const riskTitle=document.getElementById("heroRiskTitle");
+const riskDesc=document.getElementById("heroRiskDesc");
+const signals=data.filter(d=>d.signal!=="WAIT");
+const highVol=data.filter(d=>d.volTrend==="HIGH").slice(0,2).map(d=>d.symbol.replace("USDT",""));
+const strongest=[...data].sort((a,b)=>(b.score||0)-(a.score||0))[0];
+const riskiest=[...data].filter(d=>d.signal==="SELL" || d.change<0).sort((a,b)=>Math.abs(b.change||0)-Math.abs(a.change||0))[0];
+if(active)active.innerText=data.length+" COIN";
+if(vol)vol.innerText=highVol.length?highVol.join(" / "):"NORMAL";
+if(count)count.innerText="+"+signals.length+" SİNYAL";
+if(strongest && radarTitle)radarTitle.innerText=`🔥 ${strongest.symbol.replace("USDT","")} RADAR`;
+if(strongest && radarDesc)radarDesc.innerText=`${strongest.signal} · Skor ${strongest.score}/100 · ${strongest.quality}`;
+if(riskiest && riskTitle)riskTitle.innerText=`⚠ ${riskiest.symbol.replace("USDT","")} VOLATİL`;
+if(riskiest && riskDesc)riskDesc.innerText=`24s değişim: ${(riskiest.change||0).toFixed(2)}%`;
 }
 
 
@@ -2455,6 +2600,8 @@ async function refresh(){
     );
     lastData=results.sort((a,b)=>b.score-a.score);
     renderAll();
+    updateHeroDynamics(lastData);
+    trackSignals(lastData);
     emitLiveMarketAlert(lastData);
     updateTradeStats();renderTradeList();
 
@@ -2554,10 +2701,12 @@ document.getElementById("closeModalBtn").addEventListener("click",()=>document.g
 window.paperTrade=paperTrade;
 window.closeTrade=closeTrade;
 window.refresh=refresh;
+window.trackSignals=trackSignals;
 
 loadSettings();
 updateTradeStats();
 renderTradeList();
+renderSignalResults();
 refresh();
 restartAutoRefresh();
 </script>
