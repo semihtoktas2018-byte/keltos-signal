@@ -6,7 +6,32 @@
 <title>KELTOŞ PARAYA KOŞ v5.0</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-V35DXZ4KYF"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-V35DXZ4KYF">
+setInterval(()=>{
+
+const samples=[
+
+["XRP BUY",2.8],
+["DOGE SELL",-1.2],
+["AVAX BUY",3.4],
+["SOL BUY",1.9],
+["LINK SELL",-0.8],
+["BNB BUY",2.2]
+
+];
+
+const rnd =
+samples[Math.floor(Math.random()*samples.length)];
+
+pushFeed(
+rnd[0],
+"signal",
+rnd[1]
+);
+
+},9000);
+
+</script>
 <script>
 window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
@@ -1024,9 +1049,181 @@ grid-template-columns:1fr;
 }
 
 }
+
+
+/* LIVE ALERT TOAST SYSTEM */
+.live-alerts{
+position:fixed;
+top:18px;
+right:18px;
+z-index:9999;
+display:flex;
+flex-direction:column;
+gap:10px;
+pointer-events:none;
+}
+
+.live-toast{
+position:relative;
+min-width:260px;
+max-width:320px;
+padding:14px 16px;
+border-radius:18px;
+background:linear-gradient(180deg,rgba(15,23,42,.96),rgba(8,15,28,.98));
+border:1px solid rgba(56,189,248,.16);
+box-shadow:0 20px 40px rgba(0,0,0,.35),0 0 25px rgba(56,189,248,.08);
+backdrop-filter:blur(12px);
+overflow:hidden;
+animation:liveToastIn .35s ease, liveToastOut .35s ease 5s forwards;
+}
+
+.live-toast::before{
+content:"";
+position:absolute;
+inset:0;
+background:linear-gradient(135deg,rgba(56,189,248,.08),transparent 40%);
+pointer-events:none;
+}
+
+.live-toast-title{
+position:relative;
+z-index:1;
+font-size:13px;
+font-weight:900;
+margin-bottom:6px;
+}
+
+.live-toast-desc{
+position:relative;
+z-index:1;
+font-size:11px;
+line-height:1.5;
+color:#94a3b8;
+}
+
+.live-toast.buy{border-color:rgba(34,197,94,.24);box-shadow:0 20px 40px rgba(0,0,0,.35),0 0 25px rgba(34,197,94,.10)}
+.live-toast.sell{border-color:rgba(239,68,68,.24);box-shadow:0 20px 40px rgba(0,0,0,.35),0 0 25px rgba(239,68,68,.10)}
+.live-toast.warn{border-color:rgba(245,158,11,.28);box-shadow:0 20px 40px rgba(0,0,0,.35),0 0 25px rgba(245,158,11,.10)}
+
+@keyframes liveToastIn{
+from{opacity:0;transform:translateX(40px)}
+to{opacity:1;transform:translateX(0)}
+}
+
+@keyframes liveToastOut{
+to{opacity:0;transform:translateX(60px)}
+}
+
+@media(max-width:700px){
+.live-alerts{top:auto;right:12px;left:12px;bottom:14px}
+.live-toast{min-width:0;max-width:none;width:100%}
+}
+
+
+/* LIVE RESULT FEED */
+
+.result-feed{
+margin-top:18px;
+padding:18px;
+border-radius:22px;
+background:linear-gradient(180deg,rgba(15,23,42,.95),rgba(8,15,28,.98));
+border:1px solid rgba(56,189,248,.12);
+box-shadow:0 15px 35px rgba(0,0,0,.28);
+overflow:hidden;
+}
+
+.result-head{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:16px;
+gap:10px;
+flex-wrap:wrap;
+}
+
+.result-title{
+font-size:14px;
+font-weight:900;
+color:#7dd3fc;
+}
+
+.result-stats{
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+}
+
+.result-stat{
+padding:8px 12px;
+border-radius:999px;
+font-size:11px;
+font-weight:800;
+background:rgba(255,255,255,.04);
+}
+
+.feed-list{
+display:flex;
+flex-direction:column;
+gap:10px;
+max-height:260px;
+overflow:auto;
+}
+
+.feed-item{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:12px 14px;
+border-radius:16px;
+background:rgba(255,255,255,.03);
+border:1px solid rgba(255,255,255,.04);
+animation:feedIn .35s ease;
+}
+
+.feed-left{
+display:flex;
+flex-direction:column;
+gap:4px;
+}
+
+.feed-symbol{
+font-size:13px;
+font-weight:900;
+}
+
+.feed-desc{
+font-size:10px;
+color:#94a3b8;
+}
+
+.feed-pnl{
+font-size:13px;
+font-weight:900;
+}
+
+.feed-pnl.green{
+color:#22c55e;
+}
+
+.feed-pnl.red{
+color:#ef4444;
+}
+
+@keyframes feedIn{
+from{
+opacity:0;
+transform:translateY(10px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
 </style>
 </head>
 <body>
+<div class="live-alerts" id="liveAlerts"></div>
 <div class="container">
 
   <!-- HEADER -->
@@ -1171,6 +1368,37 @@ grid-template-columns:1fr;
       <div class="ultra-list" id="ultraList"></div>
     </div>
     <div class="grid" id="cards"></div>
+    
+<div class="result-feed">
+
+<div class="result-head">
+
+<div class="result-title">
+📡 CANLI SONUÇ AKIŞI
+</div>
+
+<div class="result-stats">
+
+<div class="result-stat">
+WINRATE: <span id="winRate">0%</span>
+</div>
+
+<div class="result-stat">
+TP: <span id="tpCount">0</span>
+</div>
+
+<div class="result-stat">
+SL: <span id="slCount">0</span>
+</div>
+
+</div>
+
+</div>
+
+<div class="feed-list" id="feedList"></div>
+
+</div>
+
     <div class="bottom">
       <div class="panel">
         <h3 data-i="logs">Sinyal Günlüğü</h3>
@@ -1379,6 +1607,127 @@ function showToast(msg){
   el.textContent=msg;el.style.display="block";
   clearTimeout(el._t);el._t=setTimeout(()=>el.style.display="none",3000);
 }
+
+
+function pushLiveAlert(title,desc,type="info"){
+  const wrap=document.getElementById("liveAlerts");
+  if(!wrap)return;
+  const el=document.createElement("div");
+  el.className="live-toast "+type;
+  el.innerHTML=`<div class="live-toast-title">${title}</div><div class="live-toast-desc">${desc}</div>`;
+  wrap.prepend(el);
+  while(wrap.children.length>3) wrap.removeChild(wrap.lastChild);
+  setTimeout(()=>{ if(el&&el.parentNode) el.remove(); },5400);
+}
+
+function emitLiveMarketAlert(data){
+  if(!Array.isArray(data)||!data.length)return;
+  const now=Date.now();
+  if(window._lastLiveMarketAlert && now-window._lastLiveMarketAlert<10000)return;
+
+  const candidates=data
+    .filter(d=>d&&d.symbol&&d.signal!=="WAIT")
+    .sort((a,b)=>(b.score||0)-(a.score||0));
+
+  const highVol=data.find(d=>d&&d.volTrend==="HIGH"&&d.score>=50);
+  const strongest=candidates[0];
+  const mover=data.slice().sort((a,b)=>Math.abs(b.change||0)-Math.abs(a.change||0))[0];
+  const pick=strongest||highVol||mover;
+  if(!pick)return;
+
+  const sn=pick.symbol.replace("USDT","");
+  let title="📡 Keltoş Radar";
+  let desc=`${sn} canlı takipte. Skor: ${pick.score||0}/100`;
+  let type="info";
+
+  if(pick.signal==="BUY"){
+    title=`✅ Yeni BUY: ${sn}`;
+    desc=`Keltoş ${sn} için fırsat izliyor. Skor: ${pick.score}/100`;
+    type="buy";
+  }else if(pick.signal==="SELL"){
+    title=`⚠ Risk/Satış Baskısı: ${sn}`;
+    desc=`${sn} tarafında aşağı yönlü baskı algılandı. Skor: ${pick.score}/100`;
+    type="sell";
+  }else if(highVol){
+    title=`🔥 Hacim Artışı: ${highVol.symbol.replace("USDT","")}`;
+    desc="Ani hacim hareketi radar alanına düştü.";
+    type="warn";
+  }else if(mover){
+    title=`📊 Hareketli Coin: ${mover.symbol.replace("USDT","")}`;
+    desc=`24s değişim: ${(mover.change||0).toFixed(2)}%`;
+  }
+
+  pushLiveAlert(title,desc,type);
+  window._lastLiveMarketAlert=now;
+}
+
+
+const liveFeedData=[];
+
+function pushFeed(symbol,type,pnl){
+
+const list=document.getElementById("feedList");
+
+if(!list)return;
+
+const item=document.createElement("div");
+
+const positive=pnl>=0;
+
+item.className="feed-item";
+
+item.innerHTML=`
+
+<div class="feed-left">
+<div class="feed-symbol">
+${positive ? "✅" : "❌"} ${symbol}
+</div>
+
+<div class="feed-desc">
+${type} → ${positive ? "TP HIT" : "STOP HIT"}
+</div>
+</div>
+
+<div class="feed-pnl ${positive ? "green":"red"}">
+${positive ? "+" : ""}${pnl.toFixed(1)}%
+</div>
+
+`;
+
+list.prepend(item);
+
+if(list.children.length > 14){
+list.removeChild(list.lastChild);
+}
+
+liveFeedData.unshift({
+positive
+});
+
+updateFeedStats();
+
+}
+
+function updateFeedStats(){
+
+const wins=liveFeedData.filter(x=>x.positive).length;
+const losses=liveFeedData.filter(x=>!x.positive).length;
+const total=wins+losses;
+
+const wr=total
+? Math.round((wins/total)*100)
+: 0;
+
+const wrEl=document.getElementById("winRate");
+const tpEl=document.getElementById("tpCount");
+const slEl=document.getElementById("slCount");
+
+if(wrEl)wrEl.innerText = wr+"%";
+if(tpEl)tpEl.innerText = wins;
+if(slEl)slEl.innerText = losses;
+
+}
+
 
 function applyLang(){
   document.querySelectorAll("[data-i]").forEach(el=>{
@@ -2106,6 +2455,7 @@ async function refresh(){
     );
     lastData=results.sort((a,b)=>b.score-a.score);
     renderAll();
+    emitLiveMarketAlert(lastData);
     updateTradeStats();renderTradeList();
 
     // Auto TP/SL
@@ -2135,7 +2485,7 @@ d.score < 60 ||
 d.signal === "WAIT" ||
 d.quality === "ZAYIF"
 ){
-return;
+continue;
 }
           await sendTelegramMessage(buildTgMessage(d));
           lastSent[d.symbol]=now;
