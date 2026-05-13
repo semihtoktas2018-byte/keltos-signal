@@ -1264,494 +1264,7 @@ font-size:11px;
 font-weight:800;
 color:#7dd3fc;
 }
-/* === KELTOS CTA PATCH - SAFE ADDON === */
-.keltos-cta-card{
-  margin:18px 0 14px;
-  padding:16px;
-  border:1px solid rgba(34,197,94,.35);
-  border-radius:18px;
-  background:
-    radial-gradient(circle at top left, rgba(34,197,94,.18), transparent 32%),
-    linear-gradient(135deg, rgba(2,6,23,.96), rgba(8,13,28,.96));
-  box-shadow:0 14px 34px rgba(0,0,0,.28), inset 0 0 0 1px rgba(255,255,255,.04);
-}
 
-.keltos-cta-content{
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
-
-.keltos-cta-badge{
-  width:max-content;
-  max-width:100%;
-  padding:6px 10px;
-  border-radius:999px;
-  background:rgba(34,197,94,.14);
-  border:1px solid rgba(34,197,94,.35);
-  color:#86efac;
-  font-size:12px;
-  font-weight:800;
-  letter-spacing:.4px;
-}
-
-.keltos-cta-title{
-  color:#f8fafc;
-  font-size:18px;
-  line-height:1.25;
-  font-weight:900;
-}
-
-.keltos-cta-desc{
-  color:#cbd5e1;
-  font-size:14px;
-  line-height:1.55;
-}
-
-.keltos-cta-actions{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-  margin-top:4px;
-}
-
-.keltos-cta-btn{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  min-height:44px;
-  padding:11px 12px;
-  border-radius:14px;
-  text-decoration:none;
-  font-size:13px;
-  font-weight:900;
-  line-height:1.2;
-  transition:transform .18s ease, filter .18s ease, border-color .18s ease;
-  -webkit-tap-highlight-color:transparent;
-}
-
-.keltos-cta-btn:active{
-  transform:scale(.98);
-}
-
-.keltos-cta-btn.primary{
-  color:#03140a;
-  background:linear-gradient(135deg,#22c55e,#a3e635);
-  box-shadow:0 10px 24px rgba(34,197,94,.25);
-}
-
-.keltos-cta-btn.secondary{
-  color:#e5e7eb;
-  background:rgba(15,23,42,.78);
-  border:1px solid rgba(148,163,184,.28);
-}
-
-.keltos-cta-note{
-  margin-top:2px;
-  color:#94a3b8;
-  font-size:12px;
-  line-height:1.45;
-}
-
-@media(max-width:420px){
-  .keltos-cta-card{
-    margin:14px 0 12px;
-    padding:14px;
-    border-radius:16px;
-  }
-
-  .keltos-cta-title{
-    font-size:16px;
-  }
-
-  .keltos-cta-desc{
-    font-size:13px;
-  }
-
-  .keltos-cta-actions{
-    grid-template-columns:1fr;
-  }
-
-  .keltos-cta-btn{
-    min-height:42px;
-  }
-}
-.fav-radar-badge{
-  display:inline-flex;
-  align-items:center;
-  gap:5px;
-  width:max-content;
-  margin:2px 0 6px;
-  padding:4px 8px;
-  border:1px solid rgba(255,210,80,.45);
-  border-radius:999px;
-  background:linear-gradient(135deg, rgba(255,210,80,.16), rgba(255,160,20,.06));
-  color:#ffd76a;
-  font-size:10px;
-  font-weight:900;
-  letter-spacing:.35px;
-  box-shadow:0 0 14px rgba(255,190,60,.16);
-}
-.signal-feed-shell{
-  margin-top:14px;
-  padding:12px;
-  border:1px solid rgba(120,140,180,.18);
-  border-radius:18px;
-  background:
-    radial-gradient(circle at top left, rgba(255,210,80,.08), transparent 34%),
-    linear-gradient(180deg, rgba(15,22,36,.96), rgba(8,12,20,.96));
-  box-shadow:0 14px 40px rgba(0,0,0,.22);
-}
-
-.signal-feed-head{
-  display:flex;
-  align-items:flex-start;
-  justify-content:space-between;
-  gap:10px;
-  margin-bottom:8px;
-}
-
-.signal-feed-head h3{
-  margin:2px 0 0;
-  font-size:15px;
-  line-height:1.15;
-  color:#f4f7ff;
-  letter-spacing:-.2px;
-}
-
-.signal-feed-kicker{
-  font-size:9px;
-  font-weight:900;
-  letter-spacing:.9px;
-  color:#ffd76a;
-  opacity:.95;
-}
-
-.signal-feed-pill{
-  flex:0 0 auto;
-  display:inline-flex;
-  align-items:center;
-  padding:5px 8px;
-  border:1px solid rgba(80,220,160,.25);
-  border-radius:999px;
-  background:rgba(80,220,160,.08);
-  color:#8ff0c1;
-  font-size:10px;
-  font-weight:800;
-  white-space:nowrap;
-}
-
-.signal-feed-note{
-  margin:0 0 10px;
-  padding:8px 10px;
-  border:1px solid rgba(255,255,255,.07);
-  border-radius:12px;
-  background:rgba(255,255,255,.035);
-  color:rgba(230,236,255,.72);
-  font-size:11px;
-  line-height:1.45;
-}
-
-.signal-feed-shell .feed-list{
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-}
-
-@media(max-width:520px){
-  .signal-feed-shell{
-    padding:10px;
-    border-radius:16px;
-  }
-
-  .signal-feed-head{
-    flex-direction:column;
-    align-items:flex-start;
-    gap:6px;
-  }
-
-  .signal-feed-pill{
-    font-size:9px;
-  }
-
-  .signal-feed-note{
-    font-size:10.5px;
-  }
-}
-.signal-feed-shell .feed-list:empty{
-  min-height:54px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border:1px dashed rgba(255,255,255,.10);
-  border-radius:14px;
-  background:rgba(255,255,255,.025);
-}
-
-.signal-feed-shell .feed-list:empty::before{
-  content:"Radar beklemede • Yeni sinyal oluşunca burada görünecek";
-  color:rgba(230,236,255,.48);
-  font-size:11px;
-  font-weight:700;
-  letter-spacing:.15px;
-}
-.log-panel{
-  position:relative;
-  overflow:hidden;
-}
-
-.log-panel::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-  background:radial-gradient(circle at top left, rgba(75,190,255,.08), transparent 34%);
-}
-
-.log-panel-head{
-  position:relative;
-  z-index:1;
-  display:flex;
-  align-items:flex-start;
-  justify-content:space-between;
-  gap:10px;
-  margin-bottom:8px;
-}
-
-.log-panel-head h3{
-  margin:2px 0 0;
-  font-size:14px;
-  line-height:1.15;
-  color:#f4f7ff;
-}
-
-.log-kicker{
-  font-size:9px;
-  font-weight:900;
-  letter-spacing:.9px;
-  color:#7ddcff;
-  opacity:.95;
-}
-
-.log-pill{
-  flex:0 0 auto;
-  display:inline-flex;
-  align-items:center;
-  padding:5px 8px;
-  border:1px solid rgba(125,220,255,.24);
-  border-radius:999px;
-  background:rgba(125,220,255,.08);
-  color:#9fe7ff;
-  font-size:10px;
-  font-weight:800;
-  white-space:nowrap;
-}
-
-.log-note{
-  position:relative;
-  z-index:1;
-  margin:0 0 10px;
-  padding:8px 10px;
-  border:1px solid rgba(255,255,255,.07);
-  border-radius:12px;
-  background:rgba(255,255,255,.035);
-  color:rgba(230,236,255,.70);
-  font-size:11px;
-  line-height:1.45;
-}
-
-.log-panel .log{
-  position:relative;
-  z-index:1;
-}
-
-.log-panel .log:empty{
-  min-height:58px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border:1px dashed rgba(125,220,255,.16);
-  border-radius:14px;
-  background:rgba(125,220,255,.025);
-}
-
-.log-panel .log:empty::before{
-  content:"Henüz günlük kaydı yok • Sistem hareketleri burada görünecek";
-  color:rgba(230,236,255,.48);
-  font-size:11px;
-  font-weight:700;
-  letter-spacing:.15px;
-}
-
-@media(max-width:520px){
-  .log-panel-head{
-    flex-direction:column;
-    align-items:flex-start;
-    gap:6px;
-  }
-
-  .log-pill{
-    font-size:9px;
-  }
-
-  .log-note{
-    font-size:10.5px;
-  }
-}
-.trade-panel{
-  position:relative;
-  overflow:hidden;
-}
-
-.trade-panel::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-  background:
-    radial-gradient(circle at top left, rgba(80,220,160,.08), transparent 34%),
-    radial-gradient(circle at bottom right, rgba(255,210,80,.05), transparent 30%);
-}
-
-.trade-panel-head{
-  position:relative;
-  z-index:1;
-  display:flex;
-  align-items:flex-start;
-  justify-content:space-between;
-  gap:10px;
-  margin-bottom:8px;
-}
-
-.trade-panel-head h3{
-  margin:2px 0 0;
-  font-size:15px;
-  line-height:1.15;
-  color:#f4f7ff;
-}
-
-.trade-kicker{
-  font-size:9px;
-  font-weight:900;
-  letter-spacing:.9px;
-  color:#8ff0c1;
-  opacity:.95;
-}
-
-.trade-pill{
-  flex:0 0 auto;
-  display:inline-flex;
-  align-items:center;
-  padding:5px 8px;
-  border:1px solid rgba(80,220,160,.25);
-  border-radius:999px;
-  background:rgba(80,220,160,.08);
-  color:#8ff0c1;
-  font-size:10px;
-  font-weight:800;
-  white-space:nowrap;
-}
-
-.trade-note{
-  position:relative;
-  z-index:1;
-  margin:0 0 10px;
-  padding:8px 10px;
-  border:1px solid rgba(255,255,255,.07);
-  border-radius:12px;
-  background:rgba(255,255,255,.035);
-  color:rgba(230,236,255,.70);
-  font-size:11px;
-  line-height:1.45;
-}
-
-.trade-panel .trade-stats{
-  position:relative;
-  z-index:1;
-  display:grid;
-  grid-template-columns:repeat(5, minmax(0, 1fr));
-  gap:8px;
-  align-items:stretch;
-}
-
-.trade-stat-card{
-  padding:8px 9px;
-  border:1px solid rgba(255,255,255,.075);
-  border-radius:13px;
-  background:rgba(255,255,255,.035);
-  color:rgba(230,236,255,.72);
-  font-size:11px;
-  font-weight:800;
-}
-
-.trade-stat-card b{
-  display:block;
-  margin-top:3px;
-  font-size:13px;
-  color:#f4f7ff;
-}
-
-.trade-clear-btn{
-  min-height:42px;
-  border-color:var(--red) !important;
-  color:var(--red) !important;
-  font-size:11px !important;
-  padding:5px 10px !important;
-  border-radius:13px !important;
-}
-
-.trade-list{
-  position:relative;
-  z-index:1;
-  max-height:200px;
-  overflow-y:auto;
-  font-size:11px;
-  margin-top:10px;
-}
-
-.trade-list:empty{
-  min-height:52px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border:1px dashed rgba(80,220,160,.16);
-  border-radius:14px;
-  background:rgba(80,220,160,.025);
-}
-
-.trade-list:empty::before{
-  content:"Henüz paper trade yok • Sinyal kartlarından butonlara tıkla";
-  color:rgba(230,236,255,.48);
-  font-size:11px;
-  font-weight:700;
-  letter-spacing:.15px;
-}
-
-@media(max-width:760px){
-  .trade-panel .trade-stats{
-    grid-template-columns:repeat(2, minmax(0, 1fr));
-  }
-
-  .trade-clear-btn{
-    grid-column:1 / -1;
-  }
-}
-
-@media(max-width:520px){
-  .trade-panel-head{
-    flex-direction:column;
-    align-items:flex-start;
-    gap:6px;
-  }
-
-  .trade-pill{
-    font-size:9px;
-  }
-
-  .trade-note{
-    font-size:10.5px;
-  }
-}
 </style>
 </head>
 <body>
@@ -1885,30 +1398,7 @@ color:#7dd3fc;
 </div>
   <div class="warning" data-i="warning">Bu panel otomatik işlem açmaz. Sadece teknik analiz, risk hesabı ve güvenli paper trade simülasyonu yapar.</div>
   <div class="error-bar" id="errorBar"></div>
-<!-- KELTOŞ CTA PATCH - SAFE -->
-<div class="keltos-cta-card">
-  <div class="keltos-cta-content">
-    <div class="keltos-cta-badge">🟢 ÜCRETSİZ BETA AKTİF</div>
-    <div class="keltos-cta-title">Keltoş Signal ücretsiz beta yayında.</div>
-    <div class="keltos-cta-desc">
-    Canlı kripto takip paneli, teknik analiz sinyalleri ve Telegram bildirimleri şimdilik ücretsizdir. İlk katılan kullanıcılar beta sürecinde sistemi ücretsiz deneyebilir ve premium dönem başladığında erken kullanıcı avantajı kazanabilir.
-    </div>
-  </div>
 
-  <div class="keltos-cta-actions">
-    <a class="keltos-cta-btn primary" href="https://t.me/keltossignals" target="_blank" rel="noopener">
-      Ücretsiz Telegram’a Katıl
-    </a>
-
-    <a class="keltos-cta-btn secondary" href="https://semihtoktas2018-byte.github.io/keltos-signal/" target="_blank" rel="noopener">
-      Canlı Paneli Aç
-    </a>
-
-    <div class="keltos-cta-note">
-      Yatırım tavsiyesi değildir. Teknik analiz ve test amaçlıdır.
-    </div>
-  </div>
-</div>
   <!-- TABS -->
   <div class="tabs">
     <button class="tab-btn active" onclick="switchTab('signals',this)">📊 Sinyaller</button>
@@ -1951,67 +1441,34 @@ SL: <span id="slCount">0</span>
 </div>
 
 </div>
-<div class="signal-feed-shell">
-  <div class="signal-feed-head">
-    <div>
-      <div class="signal-feed-kicker">CANLI SİNYAL AKIŞI</div>
-      <h3>Son Sinyal Geçmişi</h3>
-    </div>
-    <span class="signal-feed-pill">Paper Trade • Teknik Analiz</span>
-  </div>
 
-  <div class="signal-feed-note">
-    Keltoş burada son radar hareketlerini listeler. Bu alan yatırım tavsiyesi değildir; sadece teknik analiz ve simülasyon takibidir.
-  </div>
+<div class="feed-list" id="feedList"></div>
 
-  <div class="feed-list" id="feedList"></div>
 </div>
 
     <div class="bottom">
-     <div class="panel log-panel">
-  <div class="log-panel-head">
-    <div>
-      <div class="log-kicker">KELTOŞ KAYIT DEFTERİ</div>
-      <h3 data-i="logs">Sinyal Günlüğü</h3>
-    </div>
-    <span class="log-pill">Canlı takip</span>
-  </div>
-
-  <div class="log-note">
-    Panelde oluşan önemli sinyal, test ve sistem hareketleri burada listelenir.
-  </div>
-
-  <div class="log" id="log"></div>
-</div>
+      <div class="panel">
+        <h3 data-i="logs">Sinyal Günlüğü</h3>
+        <div class="log" id="log"></div>
+      </div>
       <div class="panel">
         <h3 data-i="guideTitle">Kullanım Notu</h3>
         <div class="small" id="guideText"></div>
       </div>
     </div>
-    <div class="panel trade-panel" style="margin-bottom:14px">
-  <div class="trade-panel-head">
-    <div>
-      <div class="trade-kicker">PAPER TRADE SİMÜLASYONU</div>
+    <div class="panel" style="margin-bottom:14px">
       <h3>📊 Paper Trade Performans</h3>
+      <div class="trade-stats">
+        <div>Toplam: <b id="t_total">0</b></div>
+        <div>Kazanan: <b id="t_win" class="green">0</b></div>
+        <div>Kaybeden: <b id="t_loss" class="red">0</b></div>
+        <div>Winrate: <b id="t_wr">0%</b></div>
+        <div>PnL: <b id="t_pnl">0 USDT</b></div>
+        <button class="btn" onclick="clearTrades()" style="font-size:11px;padding:5px 10px;border-color:var(--red);color:var(--red)">Geçmişi Sil</button>
+      </div>
+      <div id="tradeList" style="max-height:200px;overflow-y:auto;font-size:11px"></div>
     </div>
-    <span class="trade-pill">Gerçek emir açmaz</span>
   </div>
-
-  <div class="trade-note">
-    Bu alan sadece simülasyon kaydıdır. Keltoş otomatik al-sat yapmaz; kullanıcı butonla test işlemi oluşturur.
-  </div>
-
-  <div class="trade-stats">
-    <div class="trade-stat-card">Toplam: <b id="t_total">0</b></div>
-    <div class="trade-stat-card">Kazanan: <b id="t_win" class="green">0</b></div>
-    <div class="trade-stat-card">Kaybeden: <b id="t_loss" class="red">0</b></div>
-    <div class="trade-stat-card">Winrate: <b id="t_wr">0%</b></div>
-    <div class="trade-stat-card">PnL: <b id="t_pnl">0 USDT</b></div>
-    <button class="btn trade-clear-btn" onclick="clearTrades()">Geçmişi Sil</button>
-  </div>
-
-  <div id="tradeList" class="trade-list"></div>
-</div>
 
   <!-- ══ TAB: BACKTEST ══ -->
   <div class="tab-pane" id="tab-backtest">
@@ -2734,9 +2191,7 @@ trackView(d.symbol);
   const norm=Math.min(100,Math.max(0,(d.score+0)/100));
   const dash=circ*norm;
   const ringClr=d.score>=70?"var(--green)":d.score>=40?"var(--yellow)":"var(--red)";
-const favBadge = favorites.includes(d.symbol)
-  ? '<span class="fav-radar-badge">⭐ FAVORİ RADAR</span>'
-  : '';
+
   const tfHTML=Object.entries(d.tfSignals||{}).map(([tf,s])=>`<span class="tf-pill ${s}">${tf}:${s==="buy"?"▲":s==="sell"?"▼":"●"}</span>`).join("");
 
  const riskHtml=d.risk?`
@@ -2804,7 +2259,7 @@ ${d.risk.coinAmount.toFixed(6)} ${sn}
 onclick="toggleFavorite('${d.symbol}')">
 ${favorites.includes(d.symbol) ? "⭐" : "☆"}
 </button>
-${favBadge}
+
 <div class="coin-name">
 ${sn}/USDT ${d.ultra ? "🔥" : ""}
 
