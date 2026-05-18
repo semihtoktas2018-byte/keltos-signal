@@ -4,6 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>KELTOŞ PARAYA KOŞ v5.0</title>
+<!-- Maşallah. Bu sistem emekle kurulmuştur. Allah hayırlı ve bereketli etsin. Görünmez koruyucu nottur. -->
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-V35DXZ4KYF"></script>
@@ -1577,6 +1578,957 @@ body:not(.light)::before{opacity:.25}
   .actions-cell{justify-content:space-between}
 }
 
+
+
+/* === KELTOŞ STABILITY PATCH — view/detail/paper trade/theme/mobile === */
+#cards.k-view-table{display:flex!important;flex-direction:column!important;gap:0!important;margin:0!important;}
+#cards.k-view-table .card{display:grid!important;grid-template-columns:50px minmax(140px,1.25fr) 110px 88px 92px 88px 160px minmax(180px,1.6fr) 130px 150px!important;align-items:center!important;gap:12px!important;min-height:66px!important;padding:8px 10px!important;border:0!important;border-bottom:1px solid rgba(255,255,255,.075)!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;overflow:visible!important;}
+#cards.k-view-table .card::before{display:none!important;}
+#cards.k-view-table .card:hover{transform:none!important;background:rgba(255,255,255,.035)!important;}
+#cards.k-view-table .extra-details{grid-column:1/-1!important;margin:8px 0 10px!important;padding:14px!important;border-radius:12px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.08);}
+#cards.k-view-card{display:grid!important;grid-template-columns:repeat(3,minmax(220px,1fr))!important;gap:14px!important;margin-bottom:14px!important;}
+#cards.k-view-card .card{display:block!important;min-height:auto!important;padding:16px!important;border:1px solid rgba(120,190,255,.15)!important;border-radius:16px!important;background:linear-gradient(180deg,rgba(10,20,34,.92),rgba(5,12,22,.96))!important;box-shadow:0 14px 38px var(--shadow)!important;}
+#cards.k-view-card .card::before{display:block!important;}
+#cards.k-view-card .c-rank{display:flex;justify-content:space-between;margin-bottom:10px;}
+#cards.k-view-card .coin-cell{margin-bottom:10px;}
+#cards.k-view-card .price-cell{font-size:20px;margin-bottom:6px;}
+#cards.k-view-card .change-cell{font-size:15px;margin-bottom:8px;}
+#cards.k-view-card .signal-pill,#cards.k-view-card .opp-pill{margin:4px 0;}
+#cards.k-view-card .reason-cell{margin-top:8px;min-height:42px;}
+#cards.k-view-card .mini-chart{width:100%;height:42px;margin-top:10px;}
+#cards.k-view-card .actions-cell{margin-top:12px;justify-content:flex-start;flex-wrap:wrap;}
+#cards.k-view-radar{display:grid!important;grid-template-columns:repeat(4,minmax(150px,1fr))!important;gap:12px!important;}
+#cards.k-view-radar .card{display:flex!important;flex-direction:column!important;align-items:center!important;text-align:center!important;gap:8px!important;min-height:210px!important;padding:14px!important;border-radius:14px!important;background:radial-gradient(circle at 50% 0%,rgba(34,197,94,.14),rgba(10,20,34,.92) 45%,rgba(5,12,22,.96))!important;border:1px solid rgba(34,197,94,.22)!important;box-shadow:0 10px 30px var(--shadow)!important;}
+#cards.k-view-radar .reason-cell{font-size:11px;}
+#cards.k-view-radar .mini-chart{width:100%;max-width:130px;}
+#cards.k-view-radar .extra-details{width:100%;text-align:left;}
+#cards.k-view-radar .actions-cell{justify-content:center;flex-wrap:wrap;}
+body.k-view-card #signalHead,body.k-view-radar #signalHead{display:none!important;}
+body.k-view-table #signalHead{display:grid!important;}
+.detail-btn,.paper-btn{min-height:34px;}
+.paper-btn{border-radius:8px;padding:8px 10px;font-weight:900;cursor:pointer;font-size:11px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.04);color:#e5e7eb;}
+.paper-btn.buy{border-color:rgba(34,197,94,.55);color:#22c55e;background:rgba(34,197,94,.10);}
+.paper-btn.sell{border-color:rgba(239,68,68,.55);color:#ef4444;background:rgba(239,68,68,.10);}
+.paper-btn.wait{opacity:.55;cursor:not-allowed;}
+body.light{background:#eef3f8!important;color:#0f172a!important;}
+body.light .k-card,body.light .panel,body.light .bt-section,body.light .modal-card{background:#ffffff!important;color:#0f172a!important;border-color:#d7e0ea!important;box-shadow:0 12px 35px rgba(15,23,42,.08)!important;}
+body.light .k-topbar,body.light .table-card{background:#f8fafc!important;}
+body.light input,body.light select,body.light .pill,body.light .coin-search-input{background:#ffffff!important;color:#0f172a!important;border-color:#cbd5e1!important;}
+body.light .coin-sub,body.light .small,body.light .reason-cell,body.light .side-row,body.light .radar-sub,body.light .radar-state .lbl,body.light .radar-state .time{color:#475569!important;}
+body.light .k-logo-title,body.light .radar-title,body.light .k-section-title,body.light .side-row b{color:#0f172a!important;}
+body.light #cards.k-view-card .card,body.light #cards.k-view-radar .card{background:#ffffff!important;color:#0f172a!important;border-color:#d7e0ea!important;}
+@media(max-width:900px){
+  #cards.k-view-table .card,#cards.k-view-card .card,#cards.k-view-radar .card{display:block!important;grid-template-columns:1fr!important;border:1px solid rgba(255,255,255,.08)!important;border-radius:14px!important;margin-bottom:10px!important;padding:12px!important;}
+  #cards.k-view-card,#cards.k-view-radar{grid-template-columns:1fr!important;}
+  .actions-cell{justify-content:flex-start!important;flex-wrap:wrap!important;}
+  .k-control-row,.main-lower,.k-dashboard{grid-template-columns:1fr!important;}
+  .k-top-actions,.k-controls,.k-nav{overflow-x:auto!important;}
+}
+/* === KELTOS SAFE RESPONSIVE OVERFLOW PATCH === */
+html,
+body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+.app,
+.wrapper,
+.container,
+.page,
+.main,
+.dashboard,
+.dashboard-grid,
+.content,
+.layout,
+.shell {
+  max-width: 100%;
+  min-width: 0;
+}
+
+.dashboard-grid,
+.main-grid,
+.panel-grid,
+.market-grid,
+.signal-grid,
+.cards-grid,
+.content-grid {
+  min-width: 0;
+}
+
+.dashboard-grid > *,
+.main-grid > *,
+.panel-grid > *,
+.market-grid > *,
+.signal-grid > *,
+.cards-grid > *,
+.content-grid > * {
+  min-width: 0;
+}
+
+.card,
+.panel,
+.box,
+.widget,
+.stat-card,
+.signal-card,
+.coin-card,
+.side-panel,
+.sidebar-card,
+.right-panel,
+.performance-panel,
+.paper-summary {
+  min-width: 0;
+  max-width: 100%;
+}
+
+input,
+select,
+button,
+textarea {
+  max-width: 100%;
+}
+
+table {
+  width: 100%;
+  max-width: 100%;
+  table-layout: fixed;
+}
+
+td,
+th {
+  word-break: break-word;
+}
+
+@media (max-width: 1280px) {
+  .dashboard-grid,
+  .main-grid,
+  .content-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .side-panel,
+  .right-panel,
+  .sidebar,
+  .performance-panel,
+  .paper-summary {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+
+@media (max-width: 900px) {
+  header,
+  .topbar,
+  .nav,
+  .toolbar,
+  .actions,
+  .filters {
+    flex-wrap: wrap;
+  }
+
+  .coin-card,
+  .signal-card {
+    width: 100%;
+  }
+
+  .cards-grid,
+  .signal-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .page,
+  .main,
+  .content,
+  .dashboard {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+
+  .topbar,
+  .toolbar,
+  .filters {
+    gap: 8px;
+  }
+
+  input,
+  select,
+  button {
+    font-size: 14px;
+  }
+}
+/* === KELTOŞ FINAL DESKTOP FIT PATCH === */
+.container{
+  width:100% !important;
+  max-width:1180px !important;
+  margin:0 auto !important;
+  padding:0 12px 18px !important;
+  overflow-x:hidden !important;
+}
+
+.k-topbar{
+  grid-template-columns:210px minmax(360px,1fr) 300px !important;
+  gap:10px !important;
+}
+
+.k-logo-title{font-size:24px !important;}
+.k-logo-sub{font-size:11px !important;}
+
+.k-nav{
+  gap:5px !important;
+}
+
+.k-nav .tab-btn{
+  padding:8px 10px !important;
+  font-size:11px !important;
+}
+
+.k-top-actions{
+  gap:7px !important;
+}
+
+.action-btn{
+  padding:8px 11px !important;
+  font-size:11px !important;
+}
+
+.k-control-row{
+  grid-template-columns:minmax(360px,1fr) minmax(330px,430px) !important;
+  gap:10px !important;
+}
+
+.coin-search-input{
+  min-width:220px !important;
+}
+
+.k-dashboard{
+  grid-template-columns:280px minmax(420px,1fr) 320px !important;
+  gap:10px !important;
+}
+
+.market-card,
+.radar-card,
+.notification-card{
+  height:250px !important;
+}
+
+.radar-body{
+  grid-template-columns:115px minmax(180px,1fr) 130px !important;
+  gap:8px !important;
+}
+
+.radar-title{
+  font-size:22px !important;
+}
+
+.radar-sub{
+  font-size:11px !important;
+}
+
+.radar-circle{
+  width:210px !important;
+  height:135px !important;
+}
+
+.radar-metric{
+  font-size:11px !important;
+  padding:7px 0 !important;
+}
+
+.radar-metric b{
+  font-size:20px !important;
+}
+
+.opportunity-grid{
+  grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+  gap:10px !important;
+}
+
+.op-card{
+  height:150px !important;
+  padding:12px !important;
+}
+
+.main-lower{
+  grid-template-columns:minmax(0,1fr) 270px !important;
+  gap:10px !important;
+}
+
+.table-tools{
+  grid-template-columns:170px 110px 120px 120px 100px minmax(150px,1fr) !important;
+  gap:7px !important;
+}
+
+.table-tools .coin-search-input{
+  min-width:0 !important;
+  height:34px !important;
+  font-size:11px !important;
+}
+
+.table-tools .pill,
+.table-tools .btn{
+  height:34px !important;
+  font-size:10px !important;
+  padding:7px 8px !important;
+}
+
+.view-tabs button{
+  padding:7px 9px !important;
+  font-size:10px !important;
+}
+
+#cards.view-card{
+  grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  gap:10px !important;
+}
+
+#cards.view-radar{
+  grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  gap:10px !important;
+}
+
+#cards.view-table .card{
+  grid-template-columns:36px minmax(105px,1.1fr) 85px 65px 70px 58px 110px minmax(130px,1fr) 90px 75px !important;
+  gap:7px !important;
+  font-size:11px !important;
+}
+
+.signal-head{
+  grid-template-columns:36px minmax(105px,1.1fr) 85px 65px 70px 58px 110px minmax(130px,1fr) 90px 75px !important;
+  gap:7px !important;
+  font-size:9px !important;
+}
+
+.side-card{
+  padding:12px !important;
+}
+
+.side-title{
+  font-size:12px !important;
+}
+
+.side-row{
+  font-size:11px !important;
+}
+
+@media(max-width:1280px){
+  .container{
+    max-width:1100px !important;
+  }
+
+  .k-dashboard{
+    grid-template-columns:260px minmax(390px,1fr) 280px !important;
+  }
+
+  .main-lower{
+    grid-template-columns:minmax(0,1fr) 250px !important;
+  }
+
+  #cards.view-card,
+  #cards.view-radar{
+    grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  }
+}
+
+@media(max-width:1050px){
+  .container{
+    max-width:100% !important;
+    padding:0 10px 14px !important;
+  }
+
+  .k-dashboard,
+  .main-lower{
+    grid-template-columns:1fr !important;
+  }
+
+  .opportunity-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  }
+
+  .table-tools{
+    grid-template-columns:1fr 1fr !important;
+  }
+
+  #cards.view-card,
+  #cards.view-radar{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  }
+}
+
+@media(max-width:700px){
+  #cards.view-card,
+  #cards.view-radar{
+    grid-template-columns:1fr !important;
+  }
+
+  .opportunity-grid{
+    grid-template-columns:1fr !important;
+  }
+}
+
+/* === KELTOŞ FINAL FIT LOCK PATCH - 18.05.2026 === */
+/* Sadece görünüm/taşma düzeltmesi. JS, API, Telegram, Paper Trade mantığına dokunmaz. */
+html,
+body{
+  width:100% !important;
+  max-width:100% !important;
+  overflow-x:hidden !important;
+}
+
+body{
+  margin:0 !important;
+}
+
+.container.premium-shell,
+.container{
+  width:calc(100vw - 32px) !important;
+  max-width:1380px !important;
+  min-width:0 !important;
+  margin:0 auto !important;
+  padding:0 0 18px !important;
+  overflow:visible !important;
+}
+
+.k-topbar,
+.k-control-row,
+.k-dashboard,
+.opportunity-grid,
+.main-lower,
+.table-card,
+.table-tools,
+#cards,
+.side-stack{
+  width:100% !important;
+  max-width:100% !important;
+  min-width:0 !important;
+}
+
+.k-topbar{
+  display:grid !important;
+  grid-template-columns:230px minmax(0,1fr) 350px !important;
+  gap:12px !important;
+  align-items:center !important;
+}
+
+.k-brand,
+.k-nav,
+.k-top-actions,
+.k-controls,
+.coin-search-wrap{
+  min-width:0 !important;
+}
+
+.k-logo{
+  width:48px !important;
+  height:48px !important;
+}
+
+.k-logo-title{
+  font-size:25px !important;
+  line-height:1 !important;
+}
+
+.k-logo-sub{
+  font-size:11px !important;
+  letter-spacing:1.1px !important;
+  white-space:nowrap !important;
+}
+
+.k-nav{
+  justify-content:center !important;
+  gap:6px !important;
+  overflow-x:auto !important;
+  scrollbar-width:none;
+}
+
+.k-nav::-webkit-scrollbar,
+.k-top-actions::-webkit-scrollbar,
+.k-controls::-webkit-scrollbar{
+  display:none;
+}
+
+.k-nav .tab-btn{
+  padding:8px 10px !important;
+  font-size:11px !important;
+  white-space:nowrap !important;
+}
+
+.k-top-actions{
+  justify-content:flex-end !important;
+  gap:8px !important;
+  overflow-x:auto !important;
+}
+
+.action-btn,
+.icon-btn{
+  min-height:38px !important;
+  height:38px !important;
+  padding:8px 12px !important;
+  font-size:11px !important;
+  white-space:nowrap !important;
+}
+
+.k-control-row{
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) minmax(390px,500px) !important;
+  gap:12px !important;
+  align-items:center !important;
+}
+
+.live-market-bar{
+  min-width:0 !important;
+}
+
+.k-controls{
+  justify-content:flex-end !important;
+  gap:8px !important;
+  overflow-x:auto !important;
+}
+
+.coin-search-wrap{
+  flex:1 1 auto !important;
+  flex-wrap:nowrap !important;
+  margin:0 !important;
+}
+
+.coin-search-input,
+#coinSearch{
+  min-width:0 !important;
+  width:100% !important;
+  max-width:310px !important;
+}
+
+#addCoinBtn{
+  flex:0 0 auto !important;
+}
+
+#lang{
+  flex:0 0 58px !important;
+  width:58px !important;
+}
+
+.status-wrap{
+  flex:0 0 120px !important;
+  min-width:120px !important;
+  max-width:120px !important;
+}
+
+/* Üst dashboard üçlü alanı taşmadan oturur */
+.k-dashboard{
+  display:grid !important;
+  grid-template-columns:300px minmax(0,1fr) 390px !important;
+  gap:12px !important;
+  align-items:stretch !important;
+}
+
+.k-dashboard > *{
+  min-width:0 !important;
+}
+
+.market-card,
+.radar-card,
+.notification-card{
+  height:274px !important;
+  min-width:0 !important;
+}
+
+.radar-body{
+  display:grid !important;
+  grid-template-columns:125px minmax(0,1fr) 140px !important;
+  gap:10px !important;
+}
+
+.radar-head{
+  min-width:0 !important;
+}
+
+.radar-title{
+  font-size:24px !important;
+  white-space:nowrap !important;
+}
+
+.radar-sub{
+  font-size:11px !important;
+  line-height:1.35 !important;
+}
+
+.radar-circle{
+  width:min(230px,100%) !important;
+  height:145px !important;
+}
+
+.radar-metrics{
+  min-width:0 !important;
+  padding:8px 10px !important;
+}
+
+.radar-metric{
+  font-size:11px !important;
+  padding:7px 0 !important;
+}
+
+.radar-metric b{
+  font-size:20px !important;
+}
+
+.notification-card{
+  overflow:hidden !important;
+}
+
+.notification-card .feed-list{
+  max-height:220px !important;
+  overflow:auto !important;
+}
+
+/* Fırsat kartları */
+.opportunity-grid{
+  display:grid !important;
+  grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+  gap:12px !important;
+}
+
+.op-card{
+  min-width:0 !important;
+  height:150px !important;
+}
+
+/* Alt tablo + sağ panel */
+.main-lower{
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) 300px !important;
+  gap:12px !important;
+  align-items:start !important;
+}
+
+.main-lower > *{
+  min-width:0 !important;
+}
+
+.table-card{
+  min-width:0 !important;
+  overflow:hidden !important;
+}
+
+.side-stack{
+  min-width:0 !important;
+}
+
+.side-card{
+  min-width:0 !important;
+  width:100% !important;
+}
+
+/* Filtre satırı tek ekrana sığar */
+.table-tools{
+  display:grid !important;
+  grid-template-columns:minmax(160px,1fr) 120px 140px 135px 112px auto !important;
+  gap:8px !important;
+  align-items:center !important;
+}
+
+.table-tools > *{
+  min-width:0 !important;
+}
+
+.table-tools .coin-search-input{
+  width:100% !important;
+  max-width:none !important;
+  min-width:0 !important;
+}
+
+.table-tools select,
+.table-tools .pill,
+.table-tools .btn{
+  height:34px !important;
+  min-width:0 !important;
+  font-size:10px !important;
+  padding:7px 8px !important;
+}
+
+.view-tabs{
+  justify-self:end !important;
+  max-width:100% !important;
+  white-space:nowrap !important;
+}
+
+.view-tabs button{
+  padding:7px 9px !important;
+  font-size:10px !important;
+}
+
+/* KART görünümü: sağ panelle birlikte taşmaz */
+#cards.k-view-card{
+  display:grid !important;
+  grid-template-columns:repeat(auto-fit,minmax(185px,1fr)) !important;
+  gap:10px !important;
+}
+
+#cards.k-view-card .card{
+  min-width:0 !important;
+  max-width:100% !important;
+}
+
+/* RADAR görünümü: kompakt kalır */
+#cards.k-view-radar{
+  display:grid !important;
+  grid-template-columns:repeat(auto-fit,minmax(170px,1fr)) !important;
+  gap:10px !important;
+}
+
+#cards.k-view-radar .card{
+  min-width:0 !important;
+  max-width:100% !important;
+}
+
+/* TABLO görünümü: küçük ekranlarda da kırpmadan sığar */
+body.k-view-table #signalHead,
+#cards.k-view-table .card{
+  grid-template-columns:
+    34px
+    minmax(95px,1.05fr)
+    minmax(70px,.8fr)
+    58px
+    66px
+    50px
+    minmax(92px,.9fr)
+    minmax(110px,1.1fr)
+    82px
+    100px !important;
+  gap:6px !important;
+}
+
+#cards.k-view-table .card,
+#signalHead{
+  font-size:10px !important;
+}
+
+.price-cell,
+.change-cell{
+  min-width:0 !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+}
+
+.coin-cell{
+  min-width:0 !important;
+}
+
+.coin-title,
+.coin-sub,
+.reason-cell{
+  min-width:0 !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+}
+
+.actions-cell{
+  min-width:0 !important;
+  flex-wrap:wrap !important;
+  gap:5px !important;
+}
+
+.detail-btn,
+.paper-btn{
+  padding:7px 8px !important;
+  font-size:10px !important;
+}
+
+/* Büyük olmayan laptop / 1366px benzeri ekran */
+@media (max-width: 1366px){
+  .container.premium-shell,
+  .container{
+    width:calc(100vw - 24px) !important;
+    max-width:1240px !important;
+  }
+
+  .k-topbar{
+    grid-template-columns:205px minmax(0,1fr) 310px !important;
+    gap:10px !important;
+  }
+
+  .k-nav .tab-btn{
+    padding:7px 8px !important;
+    font-size:10px !important;
+  }
+
+  .action-btn,
+  .icon-btn{
+    padding:7px 10px !important;
+    font-size:10px !important;
+  }
+
+  .k-dashboard{
+    grid-template-columns:270px minmax(0,1fr) 330px !important;
+    gap:10px !important;
+  }
+
+  .main-lower{
+    grid-template-columns:minmax(0,1fr) 270px !important;
+    gap:10px !important;
+  }
+
+  .table-tools{
+    grid-template-columns:minmax(145px,1fr) 110px 125px 120px 100px auto !important;
+    gap:6px !important;
+  }
+
+  .radar-body{
+    grid-template-columns:110px minmax(0,1fr) 120px !important;
+    gap:8px !important;
+  }
+
+  .radar-title{
+    font-size:21px !important;
+  }
+
+  .radar-circle{
+    width:190px !important;
+    height:125px !important;
+  }
+
+  .market-card,
+  .radar-card,
+  .notification-card{
+    height:255px !important;
+  }
+}
+
+/* Dar desktop/tablet: sağ panel alta iner, taşma kalmaz */
+@media (max-width: 1180px){
+  .container.premium-shell,
+  .container{
+    width:calc(100vw - 20px) !important;
+    max-width:100% !important;
+  }
+
+  .k-topbar{
+    grid-template-columns:1fr !important;
+    gap:10px !important;
+  }
+
+  .k-brand,
+  .k-nav,
+  .k-top-actions{
+    justify-content:flex-start !important;
+  }
+
+  .k-control-row,
+  .k-dashboard,
+  .main-lower{
+    grid-template-columns:1fr !important;
+  }
+
+  .market-card,
+  .radar-card,
+  .notification-card{
+    height:auto !important;
+  }
+
+  .opportunity-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  }
+
+  .table-tools{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  }
+
+  .side-stack{
+    display:grid !important;
+    grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+    gap:10px !important;
+  }
+
+  .side-card + .side-card{
+    margin-top:0 !important;
+  }
+}
+
+/* Mobil */
+@media (max-width: 760px){
+  .container.premium-shell,
+  .container{
+    width:100% !important;
+    padding:0 10px 14px !important;
+  }
+
+  .k-brand{
+    align-items:center !important;
+  }
+
+  .k-nav,
+  .k-top-actions,
+  .k-controls{
+    overflow-x:auto !important;
+    padding-bottom:2px !important;
+  }
+
+  .coin-search-wrap{
+    min-width:260px !important;
+  }
+
+  .status-wrap{
+    flex:0 0 110px !important;
+  }
+
+  .radar-body{
+    grid-template-columns:1fr !important;
+  }
+
+  .radar-visual{
+    display:none !important;
+  }
+
+  .opportunity-grid,
+  .side-stack,
+  #cards.k-view-card,
+  #cards.k-view-radar{
+    grid-template-columns:1fr !important;
+  }
+
+  .table-tools{
+    grid-template-columns:1fr 1fr !important;
+  }
+
+  #signalHead{
+    display:none !important;
+  }
+
+  #cards.k-view-table .card{
+    display:block !important;
+    border:1px solid rgba(255,255,255,.08) !important;
+    border-radius:14px !important;
+    margin-bottom:10px !important;
+    padding:12px !important;
+  }
+
+  .coin-cell,
+  .actions-cell{
+    margin-top:8px !important;
+  }
+}
+
+
+/* === FINAL SAFE PATCH: tablo tek ana görünüm, kart/radar kaldırıldı === */
+#viewTabs{display:flex!important;flex-wrap:wrap!important;justify-content:flex-end!important}
+#viewTabs button[data-view="card"],#viewTabs button[data-view="radar"]{display:none!important}
+#cards{width:100%!important;max-width:100%!important;overflow:visible!important}
+#cards.k-view-table{display:flex!important;flex-direction:column!important}
+body.k-view-table #signalHead{display:grid!important}
+body.k-view-card #signalHead,body.k-view-radar #signalHead{display:grid!important}
+#cards.k-view-card,#cards.k-view-radar{display:flex!important;flex-direction:column!important}
+#cards.k-view-card .card,#cards.k-view-radar .card{display:grid!important;grid-template-columns:36px minmax(105px,1.1fr) 85px 65px 70px 58px 110px minmax(130px,1fr) 90px 100px!important;align-items:center!important;gap:7px!important;min-height:66px!important;padding:8px 10px!important;border:0!important;border-bottom:1px solid rgba(255,255,255,.075)!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;overflow:visible!important}
+.quick-filter.active{background:linear-gradient(180deg,rgba(34,197,94,.28),rgba(10,80,45,.38))!important;color:#fff!important;border-color:rgba(34,197,94,.45)!important}
+@media(max-width:900px){#viewTabs{justify-content:flex-start!important}#cards.k-view-table .card{display:block!important}}
 </style>
 </head>
 <body>
@@ -1733,12 +2685,19 @@ body:not(.light)::before{opacity:.25}
           <select class="pill"><option>Tüm Sinyaller</option></select>
           <select class="pill"><option>Tüm Durumlar</option></select>
           <button class="btn" onclick="showToast('Favoriler yıldız simgesiyle yönetilir')">☆ Favoriler</button>
-          <div class="view-tabs"><button class="active">▦ Tablo</button><button>▣ Kart</button><button>▧ Radar</button></div>
+          <div class="view-tabs" id="viewTabs">
+  <button class="active" data-view="table" onclick="setView('table',this)">▦ Tablo</button>
+  <button class="quick-filter" onclick="setQuickFilter('all',this)">Tümü</button>
+  <button class="quick-filter" onclick="setQuickFilter('opportunity',this)">Fırsatlar</button>
+  <button class="quick-filter" onclick="setQuickFilter('score70',this)">Skor 70+</button>
+  <button class="quick-filter" onclick="setQuickFilter('risk',this)">Riskliler</button>
+  <button class="quick-filter" onclick="setQuickFilter('paper',this)">Paper Adayları</button>
+</div>
         </div>
-        <div class="signal-head">
+        <div class="signal-head" id="signalHead">
           <div>#</div><div>Coin</div><div>Fiyat</div><div>24s %</div><div>Sinyal</div><div>Skor</div><div>Fırsat Durumu</div><div>Kısa Sebep</div><div>Grafik (7G)</div><div>İşlemler</div>
         </div>
-        <div class="grid" id="cards"></div>
+        <div class="grid k-view-table" id="cards"></div>
       </div>
 
       <aside class="side-stack">
@@ -1897,6 +2856,10 @@ let favorites = [];
 let refreshTimer = null;
 let openSignals = {};
 let signalResults = [];
+let currentView = "table";
+let quickFilter = "all";
+let telegramBlocked = false;
+let telegramWarned = false;
 
 try { trades   = JSON.parse(localStorage.getItem("kpk_trades")   || "[]"); } catch(e){ trades=[]; }
 try { lastSent  = JSON.parse(localStorage.getItem("kpk_lastSent") || "{}"); } catch(e){ lastSent={}; }
@@ -1954,19 +2917,35 @@ function switchTab(id,btn){
   btn.classList.add("active");
 }
 function toggleDetails(btn){
-
-const wrap =
-btn.nextElementSibling;
-if(!wrap)return;
-
-wrap.classList.toggle("show");
-
-btn.innerText =
-wrap.classList.contains("show")
-? "▲ DETAYLARI GİZLE"
-: "▼ DETAYLARI AÇ";
-
+  if(!btn) return;
+  const card = btn.closest('.card');
+  const wrap = card ? card.querySelector('.extra-details') : btn.parentElement?.querySelector('.extra-details');
+  if(!wrap){ showToast('Detay alanı bulunamadı'); return; }
+  wrap.classList.toggle('show');
+  const open = wrap.classList.contains('show');
+  btn.innerText = open ? '▲ Detayları Gizle' : '▼ Detay';
 }
+
+function setView(view,btn){
+  currentView = 'table';
+  localStorage.setItem('kpk_view', 'table');
+  document.body.classList.remove('k-view-card','k-view-radar');
+  document.body.classList.add('k-view-table');
+  const cards=document.getElementById('cards');
+  if(cards){
+    cards.classList.remove('k-view-card','k-view-radar');
+    cards.classList.add('k-view-table');
+  }
+  document.querySelectorAll('.view-tabs button[data-view]').forEach(b=>b.classList.toggle('active', b.dataset.view==='table'));
+}
+
+function setQuickFilter(type, btn){
+  quickFilter = type || 'all';
+  document.querySelectorAll('.view-tabs .quick-filter').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  renderCards();
+}
+
 function showError(msg){
   const el=document.getElementById("errorBar");
   if(!el)return;
@@ -2188,15 +3167,52 @@ if(riskiest && riskTitle)riskTitle.innerText=`⚠ ${riskiest.symbol.replace("USD
 if(riskiest && riskDesc)riskDesc.innerText=`24s değişim: ${(riskiest.change||0).toFixed(2)}%`;
 }
 
+function updateMarketStatus(data){
+  if(!Array.isArray(data) || !data.length) return;
+  const buy=data.filter(d=>d.signal==='BUY').length;
+  const sell=data.filter(d=>d.signal==='SELL').length;
+  const wait=data.filter(d=>d.signal==='WAIT').length;
+  const avgScore=data.reduce((s,d)=>s+(Number(d.score)||0),0)/data.length;
+  const pos=data.filter(d=>(Number(d.change)||0)>0).length;
+  const neg=data.filter(d=>(Number(d.change)||0)<0).length;
+  let score = Math.round((avgScore*0.50) + ((buy-sell)/Math.max(data.length,1))*25 + ((pos-neg)/Math.max(data.length,1))*25 + 35);
+  score=Math.max(0,Math.min(100,score));
+  const label = score>=56 ? 'BULLISH' : (score<=35 ? 'BEARISH' : 'NEUTRAL');
+  const clr = label==='BULLISH' ? '#22c55e' : (label==='BEARISH' ? '#ef4444' : '#f59e0b');
+  const gauge=document.querySelector('.market-card .gauge');
+  const gaugeText=document.querySelector('.market-card .gauge span');
+  const power=document.querySelector('.market-card .power-score');
+  if(gauge){ gauge.style.background = `conic-gradient(from 270deg, ${clr} 0 ${Math.round(score*1.8)}deg, rgba(148,163,184,.12) ${Math.round(score*1.8)}deg 180deg, transparent 180deg)`; }
+  if(gaugeText){ gaugeText.textContent=label; gaugeText.style.color=clr; }
+  if(power){ power.innerHTML=`${score} <small>/100</small>`; }
+  const pills=document.querySelectorAll('.market-card .market-pill');
+  if(pills[0]) pills[0].innerHTML=`<b>COIN</b><span>${data.length}</span>`;
+  if(pills[1]) pills[1].innerHTML=`<b>BUY</b><span>${buy}</span>`;
+  if(pills[2]) pills[2].innerHTML=`<b>SELL</b><span>${sell}</span>`;
+}
+
+
 
 function applyLang(){
+  const lang=getLang();
+  const dict=(lang==="tr"?TR:EN);
   document.querySelectorAll("[data-i]").forEach(el=>{
     const k=el.dataset.i;
-    if((getLang()==="tr"?TR:EN)[k]) el.innerHTML=(getLang()==="tr"?TR:EN)[k];
+    if(dict[k]) el.innerHTML=dict[k];
   });
   const gt=document.getElementById("guideText");
   if(gt) gt.innerHTML=t("guide");
-  document.documentElement.lang=getLang();
+  const warning=document.querySelector('[data-i="warning"]');
+  if(warning) warning.innerHTML=dict.warning;
+  const addBtn=document.getElementById('addCoinBtn'); if(addBtn) addBtn.textContent=lang==='tr'?'Ekle':'Add';
+  const coinSearch=document.getElementById('coinSearch'); if(coinSearch) coinSearch.placeholder=lang==='tr'?'Coin ara... (BTC, XRP, DOGE)':'Search coin... (BTC, XRP, DOGE)';
+  const visualSearch=document.getElementById('visualCoinSearch'); if(visualSearch) visualSearch.placeholder=lang==='tr'?'Coin ara...':'Search coin...';
+  const vt=document.querySelectorAll('.view-tabs button');
+  if(vt[0]) vt[0].textContent=lang==='tr'?'▦ Tablo':'▦ Table';
+  if(vt[1]) vt[1].textContent=lang==='tr'?'▣ Kart':'▣ Card';
+  if(vt[2]) vt[2].textContent=lang==='tr'?'▧ Radar':'▧ Radar';
+  document.querySelectorAll('.detail-btn').forEach(btn=>{ if(!btn.closest('.card')?.querySelector('.extra-details')?.classList.contains('show')) btn.textContent=lang==='tr'?'▼ Detay':'▼ Detail'; });
+  document.documentElement.lang=lang;
 }
 
 function fmt(n){
@@ -2224,6 +3240,7 @@ function saveSettings(){
     theme:document.body.classList.contains("light")?"light":"dark"
   };
   localStorage.setItem("kpk_settings",JSON.stringify(settings));
+  telegramBlocked=false; telegramWarned=false;
 }
 
 function loadSettings(){
@@ -2256,27 +3273,44 @@ function resetAll(){
 /* ══════════════════════
    TELEGRAM
 ══════════════════════ */
-async function sendTelegramMessage(text){
-  const token=document.getElementById("tgToken").value.trim();
-  const chatId=document.getElementById("tgChat").value.trim();
-  if(!token||!chatId)return false;
+async function sendTelegramMessage(text, opts={}){
+  const token=(document.getElementById("tgToken")?.value||"").trim();
+  const chatId=(document.getElementById("tgChat")?.value||"").trim();
+  const manual = !!opts.manual;
+  if(!token||!chatId){
+    if(manual) showError("Telegram token/chat ID eksik");
+    return false;
+  }
+  if(telegramBlocked && !manual) return false;
+  if(!/^\d+:[A-Za-z0-9_-]{20,}$/.test(token)){
+    if(manual || !telegramWarned){ showError("Telegram token formatı hatalı"); telegramWarned=true; }
+    return false;
+  }
   try{
     const res=await fetch(`https://api.telegram.org/bot${token}/sendMessage`,{
       method:"POST",headers:{"Content-Type":"application/json"},
       body:JSON.stringify({chat_id:chatId,text:text,parse_mode:"HTML"})
     });
     const data=await res.json();
-    if(!data.ok) showError("Telegram hatası: "+data.description);
-    return data.ok;
+    if(!data.ok){
+      if(res.status===401 || String(data.description||"").toLowerCase().includes('unauthorized')){
+        telegramBlocked = true;
+        if(manual || !telegramWarned){ showError("Telegram token/chat ID kontrol edilmeli"); telegramWarned=true; }
+      }else if(manual || !telegramWarned){
+        showError("Telegram hatası: "+(data.description||res.status)); telegramWarned=true;
+      }
+    }
+    return !!data.ok;
   }catch(e){
-    showError("Telegram bağlantı hatası: "+e.message);
+    if(manual || !telegramWarned){ showError("Telegram bağlantı hatası: "+e.message); telegramWarned=true; }
     return false;
   }
 }
 
 async function testTelegram(){
   showToast("Telegram test ediliyor...");
-  const ok=await sendTelegramMessage("🤑 <b>KELTOŞ PARAYA KOŞ v5.0</b>\n\n✅ Test mesajı — bot çalışıyor!");
+  telegramBlocked=false; telegramWarned=false;
+  const ok=await sendTelegramMessage("🤑 <b>KELTOŞ PARAYA KOŞ v5.0</b>\n\n✅ Test mesajı — bot çalışıyor!", {manual:true});
   showToast(ok?"✅ Telegram çalışıyor!":"❌ Telegram hatası — Ayarları kontrol et");
 }
 
@@ -2553,7 +3587,7 @@ function renderCard(d){
     <div><span class="opp-pill ${opp.type}">${opp.label}</span></div>
     <div class="reason-cell">${reason}<br><span class="coin-sub">${d.reason||""}</span></div>
     <div>${tinyChart(color)}</div>
-    <div class="actions-cell"><button class="detail-btn" onclick="toggleDetails(this)">Detay</button><button class="fav-inline" onclick="toggleFavorite('${d.symbol}')">${fav?'★':'☆'}</button></div>
+    <div class="actions-cell"><button class="detail-btn" onclick="toggleDetails(this)">▼ Detay</button>${d.signal!=="WAIT"?`<button class="paper-btn ${cls}" onclick="paperTrade('${d.symbol}','${d.signal}')">${d.signal} Paper</button>`:`<button class="paper-btn wait" disabled>WAIT</button>`}<button class="fav-inline" onclick="toggleFavorite('${d.symbol}')">${fav?'★':'☆'}</button></div>
     <div class="extra-details">
       <div class="metrics">
         <div class="metric"><div class="l">RSI 14</div><div class="v">${d.rsi?d.rsi.toFixed(1):"--"}</div></div>
@@ -2615,12 +3649,26 @@ function renderAll(){
 
 if(lastData.length){
 
-const sorted = [...lastData].sort((a,b)=>{
+let sorted = [...lastData].sort((a,b)=>{
 return favorites.includes(b.symbol) - favorites.includes(a.symbol);
 });
 
+if(quickFilter === 'opportunity'){
+  sorted = sorted.filter(d => (d.score || 0) >= 65 && d.signal !== 'WAIT');
+}
+if(quickFilter === 'score70'){
+  sorted = sorted.filter(d => (d.score || 0) >= 70);
+}
+if(quickFilter === 'risk'){
+  sorted = sorted.filter(d => (d.score || 0) < 60 || d.signal === 'SELL');
+}
+if(quickFilter === 'paper'){
+  sorted = sorted.filter(d => d.signal === 'BUY' || d.signal === 'SELL');
+}
+
 document.getElementById("cards").innerHTML =
 sorted.map(renderCard).join("");
+setView(currentView);
 
 }
 
@@ -2684,13 +3732,26 @@ function shouldAlert(d){
 ══════════════════════ */
 function paperTrade(symbol,side){
   const cd=lastData.find(x=>x.symbol===symbol);
-  if(!cd||!cd.risk){showToast("⚠️ Risk hesaplanamadı veya veri yok");return;}
+  if(!cd || !Number.isFinite(cd.price)){ showToast("⚠️ Fiyat/veri alınamadı"); return; }
+  const riskPct=(parseFloat(document.getElementById("riskPct")?.value)||2);
+  let risk = cd.risk;
+  if(!risk){
+    const entry=cd.price;
+    const riskDecimal=riskPct/100;
+    const balance=parseFloat(document.getElementById("balance")?.value)||1000;
+    const riskAmount=balance*riskDecimal;
+    const stop = side==="BUY" ? entry*(1-riskDecimal) : entry*(1+riskDecimal);
+    const target = side==="BUY" ? entry*(1+riskDecimal*2) : entry*(1-riskDecimal*2);
+    const coinAmount = riskAmount / Math.max(Math.abs(entry-stop), 0.00000001);
+    const positionUSDT = coinAmount * entry;
+    risk={entry, stop, target, riskPct, riskAmount, coinAmount, positionUSDT};
+  }
   const tr={
     id:Date.now()+Math.random(),symbol,side,
     entryPrice:cd.price,exitPrice:null,
-    positionSize:cd.risk.positionUSDT,
-    stopLoss:cd.risk.stop,target:cd.risk.target,
-    qty:cd.risk.coinAmount,status:"OPEN",
+    positionSize:risk.positionUSDT||0,
+    stopLoss:risk.stop,target:risk.target,
+    qty:risk.coinAmount||0,status:"OPEN",
     openDate:new Date().toISOString(),closeDate:null,pnl:0,pnlPercent:0
   };
   trades.push(tr);
@@ -2698,6 +3759,7 @@ function paperTrade(symbol,side){
   updateTradeStats();renderTradeList();
   addLog(`📌 Paper ${side} açıldı: <b>${symbol.replace("USDT","")}</b> @ ${fmt(tr.entryPrice)}`);
   showToast(`✅ Paper ${side} açıldı: ${symbol.replace("USDT","")}`);
+  pushLiveAlert(`Paper ${side}: ${symbol.replace("USDT","")}`, `Entry ${fmt(tr.entryPrice)} · TP ${fmt(tr.target)} · SL ${fmt(tr.stopLoss)}`, side==="BUY"?"buy":"sell");
 }
 
 function closeTrade(tradeId,currentPrice,reason="Manuel"){
@@ -2873,6 +3935,7 @@ async function refresh(){
     lastData=results.sort((a,b)=>b.score-a.score);
     renderAll();
     updateHeroDynamics(lastData);
+    updateMarketStatus(lastData);
     trackSignals(lastData);
     emitLiveMarketAlert(lastData);
     updateTradeStats();renderTradeList();
@@ -2978,6 +4041,7 @@ window.refresh=refresh;
 window.trackSignals=trackSignals;
 
 loadSettings();
+setView(currentView);
 updateTradeStats();
 renderTradeList();
 renderSignalResults();
