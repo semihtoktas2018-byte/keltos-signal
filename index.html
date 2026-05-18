@@ -2529,6 +2529,299 @@ body.k-view-card #signalHead,body.k-view-radar #signalHead{display:grid!importan
 #cards.k-view-card .card,#cards.k-view-radar .card{display:grid!important;grid-template-columns:36px minmax(105px,1.1fr) 85px 65px 70px 58px 110px minmax(130px,1fr) 90px 100px!important;align-items:center!important;gap:7px!important;min-height:66px!important;padding:8px 10px!important;border:0!important;border-bottom:1px solid rgba(255,255,255,.075)!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;overflow:visible!important}
 .quick-filter.active{background:linear-gradient(180deg,rgba(34,197,94,.28),rgba(10,80,45,.38))!important;color:#fff!important;border-color:rgba(34,197,94,.45)!important}
 @media(max-width:900px){#viewTabs{justify-content:flex-start!important}#cards.k-view-table .card{display:block!important}}
+
+/* === KELTOŞ MOBILE TOPBAR FINAL PATCH - SAFE CSS ONLY ===
+   Amaç: Çalışan JS/veri/sinyal sistemine dokunmadan mobil üst alan taşmasını düzeltmek.
+*/
+@media (max-width: 768px) {
+  html, body {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+  }
+
+  .container {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 10px 14px !important;
+    overflow-x: hidden !important;
+  }
+
+  .premium-shell,
+  .k-topbar,
+  .k-control-row,
+  .k-dashboard,
+  .main-lower,
+  .table-card,
+  .right-stack {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .k-topbar {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+    align-items: stretch !important;
+    padding: 12px 0 10px !important;
+  }
+
+  .k-brand {
+    width: 100% !important;
+    min-width: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 10px !important;
+  }
+
+  .k-logo {
+    width: 42px !important;
+    height: 42px !important;
+    flex: 0 0 42px !important;
+  }
+
+  .k-logo-title {
+    font-size: 24px !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+  }
+
+  .k-logo-sub {
+    font-size: 10px !important;
+    letter-spacing: 1.1px !important;
+    white-space: nowrap !important;
+  }
+
+  .k-top-actions {
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+    overflow: visible !important;
+  }
+
+  .k-top-actions .btn,
+  .k-top-actions .action-btn,
+  .telegram-btn,
+  .vip-btn,
+  .icon-btn,
+  #themeBtn,
+  #refreshBtn {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    height: 44px !important;
+    min-height: 44px !important;
+    padding: 8px 8px !important;
+    font-size: 12px !important;
+    line-height: 1.1 !important;
+    white-space: nowrap !important;
+    border-radius: 12px !important;
+  }
+
+  .k-nav {
+    width: 100% !important;
+    max-width: 100% !important;
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    justify-content: flex-start !important;
+    gap: 8px !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    padding: 8px 0 10px !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+  }
+
+  .k-nav::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .k-nav .tab-btn {
+    flex: 0 0 auto !important;
+    min-width: max-content !important;
+    height: 42px !important;
+    padding: 9px 13px !important;
+    font-size: 12px !important;
+    white-space: nowrap !important;
+  }
+
+  .k-control-row {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+    padding: 8px 0 12px !important;
+  }
+
+  .live-market-bar {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: 50px !important;
+    padding: 10px 12px !important;
+    overflow: hidden !important;
+  }
+
+  .market-scroll {
+    width: 100% !important;
+    overflow: hidden !important;
+  }
+
+  .market-track {
+    gap: 28px !important;
+    font-size: 13px !important;
+  }
+
+  .k-controls {
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto auto !important;
+    gap: 8px !important;
+    align-items: center !important;
+    justify-content: stretch !important;
+    overflow: visible !important;
+  }
+
+  .coin-search-wrap {
+    min-width: 0 !important;
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    gap: 8px !important;
+  }
+
+  .coin-search-input,
+  #coinSearch {
+    min-width: 0 !important;
+    width: 100% !important;
+    height: 42px !important;
+    font-size: 13px !important;
+  }
+
+  #addCoinBtn,
+  #lang {
+    height: 42px !important;
+    min-width: 58px !important;
+    padding: 8px 10px !important;
+    font-size: 12px !important;
+  }
+
+  .status-wrap {
+    grid-column: 1 / -1 !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    text-align: left !important;
+    font-size: 12px !important;
+    line-height: 1.35 !important;
+    padding-left: 2px !important;
+  }
+
+  .warning {
+    font-size: 12px !important;
+    line-height: 1.45 !important;
+    padding: 10px 12px !important;
+  }
+
+  .k-dashboard,
+  .main-lower {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+
+  .market-card,
+  .radar-card,
+  .notification-card,
+  .op-card,
+  .side-card,
+  .table-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    min-width: 0 !important;
+  }
+
+  .gauge-wrap,
+  .radar-body {
+    grid-template-columns: 1fr !important;
+  }
+
+  .radar-visual {
+    display: none !important;
+  }
+
+  .opportunity-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .table-tools {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+  }
+
+  .table-tools .coin-search-input {
+    grid-column: 1 / -1 !important;
+  }
+
+  .view-tabs {
+    grid-column: 1 / -1 !important;
+    justify-self: stretch !important;
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: repeat(5, 1fr) !important;
+  }
+
+  .view-tabs button {
+    min-width: 0 !important;
+    padding: 9px 5px !important;
+    font-size: 11px !important;
+    white-space: nowrap !important;
+  }
+
+  #cards.k-view-table .card,
+  #cards.k-view-card .card,
+  #cards.k-view-radar .card {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .extra-details {
+    overflow-x: auto !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .k-logo-title {
+    font-size: 21px !important;
+  }
+
+  .k-logo-sub {
+    font-size: 9px !important;
+    letter-spacing: .8px !important;
+  }
+
+  .k-top-actions {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  .k-controls {
+    grid-template-columns: 1fr auto !important;
+  }
+
+  #lang {
+    grid-column: auto !important;
+  }
+
+  .status-wrap {
+    grid-column: 1 / -1 !important;
+  }
+}
+
 </style>
 </head>
 <body>
