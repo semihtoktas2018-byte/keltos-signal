@@ -4341,5 +4341,121 @@ renderSignalResults();
 refresh();
 restartAutoRefresh();
 </script>
+
+<script>
+/* === KELTOŞ GA4 SAFE EVENT PATCH ===
+   Sadece tıklama takibi ekler. Sinyal motoru, Telegram token, Paper Trade ve UI akışına dokunmaz.
+*/
+(function(){
+  if (window.__keltosGaSafePatchLoaded) return;
+  window.__keltosGaSafePatchLoaded = true;
+
+  function keltosTrack(eventName, params){
+    try{
+      var payload = Object.assign({
+        app_name: 'keltos_signal',
+        page_path: location.pathname || '/',
+        view_mode: document.body.className || ''
+      }, params || {});
+
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', eventName, payload);
+      }
+
+      if (window.console && console.info) {
+        console.info('[KELTOŞ GA]', eventName, payload);
+      }
+    }catch(e){}
+  }
+
+  function textOf(el){
+    try { return (el && (el.innerText || el.textContent) || '').trim().slice(0,80); }
+    catch(e){ return ''; }
+  }
+
+  function closestTextMatch(start, words){
+    var el = start;
+    for (var i=0; el && i<6; i++, el=el.parentElement){
+      var t = textOf(el).toLowerCase();
+      for (var w=0; w<words.length; w++){
+        if (t.indexOf(words[w]) !== -1) return el;
+      }
+    }
+    return null;
+  }
+
+  document.addEventListener('click', function(e){
+    var target = e.target;
+    if (!target) return;
+
+    var btn = target.closest ? target.closest('button,a,.btn,.tab-btn,.detail-btn,.paper-btn,.fav-inline,.fav-btn') : null;
+    if (!btn) return;
+
+    var txt = textOf(btn).toLowerCase();
+    var fullArea = textOf(btn.parentElement || btn).toLowerCase();
+
+    if (txt.indexOf('telegram') !== -1) {
+      keltosTrack('telegram_click', { button_text: textOf(btn) });
+      return;
+    }
+
+    if (txt.indexOf('vip') !== -1) {
+      keltosTrack('vip_click', { button_text: textOf(btn) });
+      return;
+    }
+
+    if (txt.indexOf('paper trade') !== -1 || txt.indexOf('paper trade’e git') !== -1 || txt.indexOf('paper trade\'e git') !== -1) {
+      keltosTrack('paper_trade_click', { button_text: textOf(btn) });
+      return;
+    }
+
+    if (txt.indexOf('yenile') !== -1 || txt.indexOf('refresh') !== -1) {
+      keltosTrack('refresh_click', { button_text: textOf(btn) });
+      return;
+    }
+
+    if (txt.indexOf('detay') !== -1 || txt.indexOf('gizle') !== -1) {
+      var card = btn.closest ? btn.closest('.card') : null;
+      var coin = card ? textOf(card.querySelector('.coin-title,.coin-name,.coin-cell')) : '';
+      keltosTrack('detail_open', { coin: coin, button_text: textOf(btn) });
+      return;
+    }
+
+    if (txt.indexOf('market buy') !== -1 || txt.indexOf('buy paper') !== -1 || (txt.indexOf('buy') !== -1 && fullArea.indexOf('paper') !== -1)) {
+      var cardBuy = btn.closest ? btn.closest('.card') : null;
+      var coinBuy = cardBuy ? textOf(cardBuy.querySelector('.coin-title,.coin-name,.coin-cell')) : '';
+      keltosTrack('buy_paper_click', { coin: coinBuy, button_text: textOf(btn) });
+      return;
+    }
+
+    if (txt.indexOf('market sell') !== -1 || txt.indexOf('sell paper') !== -1 || (txt.indexOf('sell') !== -1 && fullArea.indexOf('paper') !== -1)) {
+      var cardSell = btn.closest ? btn.closest('.card') : null;
+      var coinSell = cardSell ? textOf(cardSell.querySelector('.coin-title,.coin-name,.coin-cell')) : '';
+      keltosTrack('sell_paper_click', { coin: coinSell, button_text: textOf(btn) });
+      return;
+    }
+
+    if (txt.indexOf('favori') !== -1 || txt === '★' || txt === '☆') {
+      keltosTrack('favorite_click', { button_text: textOf(btn) });
+      return;
+    }
+
+    if (txt === '🌙' || txt === '☀️' || txt.indexOf('tema') !== -1) {
+      keltosTrack('theme_toggle', { button_text: textOf(btn) });
+      return;
+    }
+  }, true);
+
+  document.addEventListener('change', function(e){
+    var el = e.target;
+    if (!el) return;
+    var val = String(el.value || '').toLowerCase();
+    if (val === 'tr' || val === 'en' || val.indexOf('türk') !== -1 || val.indexOf('english') !== -1) {
+      keltosTrack('language_change', { selected_value: el.value || '' });
+    }
+  }, true);
+})();
+</script>
+
 </body>
 </html>
