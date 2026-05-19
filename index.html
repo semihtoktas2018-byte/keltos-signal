@@ -2822,6 +2822,32 @@ body.k-view-card #signalHead,body.k-view-radar #signalHead{display:grid!importan
   }
 }
 
+
+/* === KELTOŞ v5.1 SALES-STABILITY PATCH === */
+#viewTabs button[data-view="card"],
+#viewTabs button[data-view="radar"]{display:none!important}
+#cards{width:100%!important;max-width:100%!important}
+.coin-avatar{
+  color:#fff!important;
+  background:linear-gradient(180deg,rgba(56,189,248,.18),rgba(155,92,255,.14))!important;
+  border:1px solid rgba(255,255,255,.18)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08)!important;
+}
+@media(max-width:900px){
+  .table-card{overflow-x:auto!important;-webkit-overflow-scrolling:touch!important}
+  #cards.k-view-table .card{
+    min-width:0!important;
+    width:100%!important;
+    display:block!important;
+  }
+  .signal-head{display:none!important}
+  .view-tabs{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    display:grid!important;
+  }
+  .view-tabs button{font-size:11px!important;white-space:nowrap!important}
+}
+
 </style>
 </head>
 <body>
@@ -2848,7 +2874,7 @@ body.k-view-card #signalHead,body.k-view-radar #signalHead{display:grid!importan
 
     <div class="k-top-actions">
       <button class="btn action-btn telegram-btn" onclick="switchTab('settings',this);showToast('Telegram ayarlarını buradan yapabilirsin')">✈ Telegram</button>
-      <button class="btn action-btn vip-btn" onclick="showToast('VIP Sinyal Odası yakında aktif edilecek')">♛ VIP Üyelik</button>
+      <button class="btn action-btn vip-btn" onclick="handleVipAccess()">♛ VIP Üyelik</button>
       <button class="btn icon-btn" id="themeBtn">🌙</button>
       <button class="btn action-btn" id="refreshBtn">↻ Yenile</button>
     </div>
@@ -2858,19 +2884,8 @@ body.k-view-card #signalHead,body.k-view-radar #signalHead{display:grid!importan
     <div class="live-market-bar">
       <div class="live-dot"></div>
       <div class="market-scroll">
-        <div class="market-track">
-          <span class="ticker-item btc">🔥 BTC +2.14%</span>
-          <span class="ticker-item eth">◆ ETH +1.28%</span>
-          <span class="ticker-item sol">◎ SOL +3.92%</span>
-          <span class="ticker-item xrp">✕ XRP +5.82%</span>
-          <span class="ticker-item avax">▲ AVAX +4.11%</span>
-          <span class="ticker-item doge">🐕 DOGE -1.21%</span>
-          <span class="ticker-item link">⬢ LINK +2.31%</span>
-          <span class="ticker-item pepe">🐸 PEPE +7.88%</span>
-          <span class="ticker-item btc">🔥 BTC +2.14%</span>
-          <span class="ticker-item eth">◆ ETH +1.28%</span>
-          <span class="ticker-item sol">◎ SOL +3.92%</span>
-          <span class="ticker-item xrp">✕ XRP +5.82%</span>
+        <div class="market-track" id="marketTicker">
+          <span class="ticker-item">Canlı piyasa verisi yükleniyor...</span>
         </div>
       </div>
     </div>
@@ -2900,10 +2915,10 @@ body.k-view-card #signalHead,body.k-view-radar #signalHead{display:grid!importan
       <div class="k-card market-card">
         <div class="k-section-title">PİYASA DURUMU</div>
         <div class="gauge-wrap">
-          <div class="gauge"><span>BULLISH</span></div>
+          <div class="gauge"><span>--</span></div>
           <div>
             <div class="power-label">PİYASA GÜÇ SKORU</div>
-            <div class="power-score">68 <small>/100</small></div>
+            <div class="power-score">-- <small>/100</small></div>
           </div>
         </div>
         <div class="sparkline-box">
@@ -2913,9 +2928,9 @@ body.k-view-card #signalHead,body.k-view-radar #signalHead{display:grid!importan
           </svg>
         </div>
         <div class="market-mini">
-          <div class="market-pill"><b>BTC.D</b><span>53.2%</span></div>
-          <div class="market-pill"><b>BTC</b><span>+1.72%</span></div>
-          <div class="market-pill"><b>ETH</b><span>+2.35%</span></div>
+          <div class="market-pill"><b>COIN</b><span>--</span></div>
+          <div class="market-pill"><b>BUY</b><span>--</span></div>
+          <div class="market-pill"><b>SELL</b><span>--</span></div>
         </div>
       </div>
 
@@ -2974,9 +2989,24 @@ body.k-view-card #signalHead,body.k-view-radar #signalHead{display:grid!importan
       <div class="k-card table-card">
         <div class="table-tools">
           <input type="text" id="visualCoinSearch" placeholder="Coin ara..." class="coin-search-input" oninput="filterVisibleCards(this.value)">
-          <select class="pill"><option>Tümü</option></select>
-          <select class="pill"><option>Tüm Sinyaller</option></select>
-          <select class="pill"><option>Tüm Durumlar</option></select>
+          <select class="pill" id="assetFilter" onchange="renderAll(); if(typeof gtag==='function')gtag('event','filter_change',{filter_type:'asset',filter_value:this.value});">
+            <option value="all">Tümü</option>
+            <option value="favorites">Favoriler</option>
+          </select>
+          <select class="pill" id="signalFilter" onchange="renderAll(); if(typeof gtag==='function')gtag('event','filter_change',{filter_type:'signal',filter_value:this.value});">
+            <option value="all">Tüm Sinyaller</option>
+            <option value="BUY">BUY</option>
+            <option value="SELL">SELL</option>
+            <option value="WAIT">WAIT</option>
+          </select>
+          <select class="pill" id="statusFilter" onchange="renderAll(); if(typeof gtag==='function')gtag('event','filter_change',{filter_type:'status',filter_value:this.value});">
+            <option value="all">Tüm Durumlar</option>
+            <option value="hot">Fırsat</option>
+            <option value="watch">Takipte</option>
+            <option value="risk">Riskli</option>
+            <option value="late">Geç Kalınmış</option>
+            <option value="wait">Bekle</option>
+          </select>
           <button class="btn" onclick="showToast('Favoriler yıldız simgesiyle yönetilir')">☆ Favoriler</button>
           <div class="view-tabs" id="viewTabs">
   <button class="active" data-view="table" onclick="setView('table',this)">▦ Tablo</button>
@@ -3005,7 +3035,7 @@ body.k-view-card #signalHead,body.k-view-radar #signalHead{display:grid!importan
 
         <div class="k-card side-card" id="paperTradePanel">
           <div class="side-title">PAPER TRADE</div>
-          <div class="side-row"><span>Toplam Portföy</span><b>12,450.50 USDT</b></div>
+          <div class="side-row"><span>Toplam Portföy</span><b id="t_portfolio">-- USDT</b></div>
           <div class="side-row"><span>Açık İşlem</span><b id="t_win">0</b></div>
           <div class="side-row"><span>Kapalı İşlem</span><b id="t_loss">0</b></div>
           <div class="side-row"><span>Winrate</span><b id="t_wr">0%</b></div>
@@ -3016,7 +3046,7 @@ body.k-view-card #signalHead,body.k-view-radar #signalHead{display:grid!importan
         <div class="k-card side-card vip-side">
           <div class="side-title">💎 VIP SİNYAL ODASI</div>
           <p>Erken uyarılar, anlık bildirimler, özel sinyaller ve daha fazlası için VIP'e katılın.</p>
-          <button class="btn" onclick="showToast('VIP geçiş bağlantısı eklenecek')">♛ VIP'e Geçiş Yap</button>
+          <button class="btn" onclick="handleVipAccess()">♛ VIP'e Geçiş Yap</button>
         </div>
       </aside>
     </section>
@@ -3230,6 +3260,8 @@ function setView(view,btn){
     cards.classList.add('k-view-table');
   }
   document.querySelectorAll('.view-tabs button[data-view]').forEach(b=>b.classList.toggle('active', b.dataset.view==='table'));
+  const head=document.getElementById('signalHead');
+  if(head) head.style.display='grid';
 }
 
 function setQuickFilter(type, btn){
@@ -3253,6 +3285,23 @@ function showToast(msg){
   el.textContent=msg;el.style.display="block";
   clearTimeout(el._t);el._t=setTimeout(()=>el.style.display="none",3000);
 }
+
+function handleVipAccess(){
+  try{
+    if(typeof gtag === "function") gtag("event","vip_click",{source:"vip_button"});
+  }catch(e){}
+  const vipMsgEl=document.getElementById("vipMsg");
+  const waEl=document.getElementById("waNumber");
+  const raw=(waEl && waEl.value ? waEl.value : "").replace(/\D/g,"");
+  const msg=(vipMsgEl && vipMsgEl.value ? vipMsgEl.value : "Merhaba, Keltoş VIP sinyal odası hakkında bilgi almak istiyorum.");
+  if(raw && raw.length>=10){
+    window.open("https://wa.me/"+raw+"?text="+encodeURIComponent(msg), "_blank");
+    return;
+  }
+  switchTab('settings', document.querySelector('.k-nav .tab-btn:last-child') || document.querySelector('.tab-btn'));
+  showToast("VIP için WhatsApp numaranı veya Telegram ayarlarını ekleyebilirsin.");
+}
+
 
 
 function pushLiveAlert(title,desc,type="info"){
@@ -3458,6 +3507,25 @@ if(strongest && radarTitle)radarTitle.innerText=`🔥 ${strongest.symbol.replace
 if(strongest && radarDesc)radarDesc.innerText=`${strongest.signal} · Skor ${strongest.score}/100 · ${strongest.quality}`;
 if(riskiest && riskTitle)riskTitle.innerText=`⚠ ${riskiest.symbol.replace("USDT","")} VOLATİL`;
 if(riskiest && riskDesc)riskDesc.innerText=`24s değişim: ${(riskiest.change||0).toFixed(2)}%`;
+}
+
+
+function updateMarketTicker(data){
+  const wrap=document.getElementById("marketTicker");
+  if(!wrap) return;
+  const iconMap={BTC:"🔥",ETH:"◆",SOL:"◎",XRP:"✕",AVAX:"▲",DOGE:"🐕",LINK:"⬢",PEPE:"🐸",BNB:"●",ADA:"A"};
+  const clsMap={BTC:"btc",ETH:"eth",SOL:"sol",XRP:"xrp",AVAX:"avax",DOGE:"doge",LINK:"link",PEPE:"pepe"};
+  const wanted=["BTC","ETH","SOL","XRP","AVAX","DOGE","LINK","PEPE","BNB","ADA"];
+  const items=wanted.map(sn=>{
+    const d=(Array.isArray(data)?data:[]).find(x=>x && x.symbol===sn+"USDT");
+    const cls=clsMap[sn]||"";
+    if(!d || !Number.isFinite(Number(d.change))){
+      return `<span class="ticker-item ${cls}">${iconMap[sn]||"●"} ${sn} --</span>`;
+    }
+    const ch=Number(d.change);
+    return `<span class="ticker-item ${cls}">${iconMap[sn]||"●"} ${sn} ${ch>=0?"+":""}${ch.toFixed(2)}%</span>`;
+  });
+  wrap.innerHTML=items.concat(items.slice(0,4)).join("");
 }
 
 function updateMarketStatus(data){
@@ -3853,8 +3921,10 @@ function renderCard(d){
   const opp=getOpportunityStatus(d);
   const color=d.signal==="SELL"?"#ff3b3b":(opp.type==="late"?"#7aa7ff":(opp.type==="watch"?"#f5b629":"#00ff66"));
   const score=d.score||0;
-  const coinIcon = sn[0] || "●";
-  const sub = sn==="BTC"?"Bitcoin":sn==="ETH"?"Ethereum":sn==="SOL"?"Solana":sn==="AVAX"?"Avalanche":sn==="DOGE"?"Dogecoin":sn==="BNB"?"Binance Coin":sn;
+  const coinIconMap={BTC:"₿",ETH:"Ξ",SOL:"S",BNB:"B",XRP:"X",ADA:"A",DOGE:"Ð",AVAX:"A",LINK:"L",PEPE:"P"};
+  const coinIcon = coinIconMap[sn] || (sn.slice(0,2) || "●");
+  const subMap={BTC:"Bitcoin",ETH:"Ethereum",SOL:"Solana",AVAX:"Avalanche",DOGE:"Dogecoin",BNB:"Binance Coin",XRP:"XRP",ADA:"Cardano",LINK:"Chainlink",PEPE:"Pepe"};
+  const sub = subMap[sn] || sn;
   const fav = favorites.includes(d.symbol);
   const reason = opp.reason || d.reason || "Teknik şartlar izleniyor";
   const changeHtml = `<span class="${ch>=0?'green':'red'}">${ch>=0?'+':''}${ch.toFixed(2)}%</span>`;
@@ -3931,20 +4001,42 @@ function renderOpportunitySummary(){
 }
 
 function filterVisibleCards(q){
-  const needle=String(q||"").trim().toUpperCase();
-  document.querySelectorAll("#cards .card").forEach(el=>{
-    const sym=(el.dataset.symbol||"").toUpperCase();
-    el.style.display=!needle||sym.includes(needle)?"grid":"none";
-  });
+  try{
+    if(typeof gtag === "function") gtag("event","search_coin",{search_term:String(q||"").trim().toUpperCase()});
+  }catch(e){}
+  renderAll();
+}
+
+function getFilterValue(id, fallback="all"){
+  const el=document.getElementById(id);
+  return el ? String(el.value || fallback) : fallback;
 }
 
 function renderAll(){
 
 if(lastData.length){
 
+const searchNeedle=String(document.getElementById("visualCoinSearch")?.value || "").trim().toUpperCase();
+const assetFilter=getFilterValue("assetFilter");
+const signalFilter=getFilterValue("signalFilter");
+const statusFilter=getFilterValue("statusFilter");
+
 let sorted = [...lastData].sort((a,b)=>{
 return favorites.includes(b.symbol) - favorites.includes(a.symbol);
 });
+
+if(searchNeedle){
+  sorted = sorted.filter(d => String(d.symbol||"").toUpperCase().includes(searchNeedle));
+}
+if(assetFilter === "favorites"){
+  sorted = sorted.filter(d => favorites.includes(d.symbol));
+}
+if(signalFilter !== "all"){
+  sorted = sorted.filter(d => d.signal === signalFilter);
+}
+if(statusFilter !== "all"){
+  sorted = sorted.filter(d => getOpportunityStatus(d).type === statusFilter);
+}
 
 if(quickFilter === 'opportunity'){
   sorted = sorted.filter(d => (d.score || 0) >= 65 && d.signal !== 'WAIT');
@@ -3959,9 +4051,13 @@ if(quickFilter === 'paper'){
   sorted = sorted.filter(d => d.signal === 'BUY' || d.signal === 'SELL');
 }
 
-document.getElementById("cards").innerHTML =
-sorted.map(renderCard).join("");
-setView(currentView);
+const cardsEl=document.getElementById("cards");
+if(cardsEl){
+  cardsEl.innerHTML = sorted.length
+    ? sorted.map(renderCard).join("")
+    : "<div class='small' style='padding:16px'>Bu filtreye uygun coin bulunamadı.</div>";
+}
+setView('table');
 
 }
 
@@ -4075,15 +4171,22 @@ function clearTrades(){
 }
 
 function updateTradeStats(){
+  const open=trades.filter(t=>t.status==="OPEN");
   const closed=trades.filter(t=>t.status==="CLOSED");
   const wins=closed.filter(t=>t.pnl>0).length;
   const losses=closed.filter(t=>t.pnl<0).length;
   const totalPnL=closed.reduce((s,t)=>s+(t.pnl||0),0);
+  const base=parseFloat(document.getElementById("balance")?.value)||1000;
+  const portfolio=base+totalPnL;
   const wr=closed.length?(wins/closed.length*100).toFixed(1):0;
-  document.getElementById("t_total").innerText=trades.length;
-  document.getElementById("t_win").innerText=wins;
-  document.getElementById("t_loss").innerText=losses;
-  document.getElementById("t_wr").innerText=wr+"%";
+  const totalEl=document.getElementById("t_total"); if(totalEl) totalEl.innerText=trades.length;
+  const openEl=document.getElementById("t_win"); if(openEl) openEl.innerText=open.length;
+  const closedEl=document.getElementById("t_loss"); if(closedEl) closedEl.innerText=closed.length;
+  const wrEl=document.getElementById("t_wr"); if(wrEl) wrEl.innerText=wr+"%";
+  const portEl=document.getElementById("t_portfolio"); if(portEl) portEl.innerText=portfolio.toFixed(2)+" USDT";
+  const tpEl=document.getElementById("tpCount"); if(tpEl) tpEl.innerText=wins;
+  const slEl=document.getElementById("slCount"); if(slEl) slEl.innerText=losses;
+  const winRateEl=document.getElementById("winRate"); if(winRateEl) winRateEl.innerText=wr+"%";
   const pEl=document.getElementById("t_pnl");
   if(pEl) pEl.innerHTML=`<span class="${totalPnL>=0?"green":"red"}">${totalPnL>=0?"+":""}${totalPnL.toFixed(2)} USDT</span>`;
 }
@@ -4229,6 +4332,7 @@ async function refresh(){
     renderAll();
     updateHeroDynamics(lastData);
     updateMarketStatus(lastData);
+    updateMarketTicker(lastData);
     trackSignals(lastData);
     emitLiveMarketAlert(lastData);
     updateTradeStats();renderTradeList();
